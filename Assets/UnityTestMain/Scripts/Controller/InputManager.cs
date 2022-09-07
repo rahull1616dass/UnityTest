@@ -1,18 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 [DefaultExecutionOrder(-1)]
-public class TouchControlManager : Singleton<TouchControlManager>
+public class InputManager : Singleton<InputManager>
 {
 
-    public delegate void TouchMovement(AdvancedTouch.Touch fingre, int Index);
+    public delegate void TouchMovement(AdvancedTouch.Touch currentTouch, int touchIndex);
     public event TouchMovement OnTouchMove;
-    public delegate void TouchStart(AdvancedTouch.Touch fingre, int Index);
+    public delegate void TouchStart(AdvancedTouch.Touch currentTouch, int touchIndex);
     public event TouchStart OnBeginTouch;
-    public delegate void TouchEnd(AdvancedTouch.Touch fingre, int Index);
+    public delegate void TouchEnd(AdvancedTouch.Touch currentTouch, int touchIndex);
     public event TouchEnd OnEndTouch;
 
     private void OnEnable()
