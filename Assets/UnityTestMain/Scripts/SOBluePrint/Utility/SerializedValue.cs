@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class SerializedValue<T> : RuntimeValue<T>
 {
-    [SerializeField]
-    private T scriptableObjectValue;
+    public T scriptableObjectValue;
 }
