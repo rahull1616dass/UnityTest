@@ -1,84 +1,74 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class ItemController : MonoBehaviour
 {
-    [SerializeField] private int m_CurrentLayer, m_PlaneLayer;
-    [SerializeField] private CurrentSelectedItemBluePrint m_CurrentItem;
+    [SerializeField] private CurrentSelectedItemBluePrint m_CurrentSelectedItem;
 
-    private Camera mainCam;
+    public static bool IsClickingItemObject;
+
+    private Transform thisTransform;
+    private EventTrigger thisObjectClickEvent;
+
+    public Vector3 currentPosition { 
+        get {
+                if (thisTransform == null)
+                    thisTransform = transform;
+                return thisTransform.position; 
+        } 
+    }
+
+    public Vector3 currentScale
+    {
+        get
+        {
+            if (thisTransform == null)
+                thisTransform = transform;
+            return thisTransform.localScale;
+        }
+    }
 
     private void Start()
     {
-        mainCam = Camera.main;
+        thisTransform = transform;
+        CreateAndAddTrigger();
     }
 
-    private void OnEnable()
+    private void CreateAndAddTrigger()
     {
-        InputManager.Instance.OnBeginTouch += InputManager_OnBeginTouch;
-        InputManager.Instance.OnEndTouch += InputManager_OnEndTouch;
+
+        thisObjectClickEvent = gameObject.AddComponent<EventTrigger>();
+
+        EventTrigger.Entry onPointerClickEntry = new EventTrigger.Entry();
+        onPointerClickEntry.eventID = EventTriggerType.PointerClick;
+        onPointerClickEntry.callback.AddListener((eventData) => { OnClickThisObject(); });
+
+        EventTrigger.Entry onPointerDownEntry = new EventTrigger.Entry();
+        onPointerDownEntry.eventID = EventTriggerType.PointerDown;
+        onPointerDownEntry.callback.AddListener((eventData) => { IsClickingItemObject = true; });
+        thisObjectClickEvent.triggers.Add(onPointerDownEntry);
+        thisObjectClickEvent.triggers.Add(onPointerClickEntry);
     }
 
 
-    private void OnDisable()
+    private void OnClickThisObject()
     {
-        InputManager.Instance.OnBeginTouch -= InputManager_OnBeginTouch;
-        InputManager.Instance.OnEndTouch -= InputManager_OnEndTouch;
+        m_CurrentSelectedItem.Value = this;
+        IsClickingItemObject = false;
     }
 
-    private void InputManager_OnBeginTouch(AdvancedTouch.Touch currentTouch, int touchIndex)
+    public void OnMoveItem(Vector3 position)
     {
-        if(touchIndex == 0)
-        {
-            Ray ray = mainCam.ScreenPointToRay(currentTouch.screenPosition);
-            if (Physics.Raycast(ray.origin, ray.direction, 1 << m_CurrentLayer))
-            {
-                GameManager.Instance.clickState = EClickState.FirstTapOnObject;
-                m_CurrentItem.Value = null;
-            }
-            else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
-            {
-                GameManager.Instance.clickState = EClickState.NormalMovement;
-                m_CurrentItem.Value = null;
-            }
-        }
+        thisTransform.position = position;
     }
 
-    private void InputManager_OnMoveTouch(AdvancedTouch.Touch currentTouch, int touchIndex)
+    public void OnScaleItem(float ScaleValue)
     {
-        if (touchIndex == 0)
-        {
-            Ray ray = mainCam.ScreenPointToRay(currentTouch.screenPosition);
-            if (Physics.Raycast(ray.origin, ray.direction, 1 << m_CurrentLayer) && GameManager.Instance.clickState == EClickState.FirstTapOnObject)
-            {
-                GameManager.Instance.clickState = EClickState.NormalMovement;
-                m_CurrentItem.Value = null;
-            }
-            else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
-            {
-                GameManager.Instance.clickState = EClickState.NormalMovement;
-                m_CurrentItem.Value = null;
-            }
-        }
-    }
-
-    private void InputManager_OnEndTouch(AdvancedTouch.Touch currentTouch, int touchIndex)
-    {
-        if (touchIndex == 0)
-        {
-            Ray ray = mainCam.ScreenPointToRay(currentTouch.screenPosition);
-            if (Physics.Raycast(ray.origin, ray.direction, 1 << m_CurrentLayer) && GameManager.Instance.clickState == EClickState.FirstTapOnObject)
-            {
-                GameManager.Instance.clickState = EClickState.ObjectTapped;
-                m_CurrentItem.Value = this;
-            }
-            else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
-            {
-                GameManager.Instance.clickState = EClickState.NormalMovement;
-                m_CurrentItem.Value = null;
-            }
-        }
+        thisTransform.localScale = new Vector3(ScaleValue, ScaleValue, ScaleValue);
     }
 }

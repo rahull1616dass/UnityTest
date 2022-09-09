@@ -19,11 +19,19 @@ public class ItemSelectUIScript : MonoBehaviour
     private void OnEnable()
     {
         m_CurrentItem.ValueChanged += OnChangedItemData;
+        InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
     }
 
     private void OnDisable()
     {
         m_CurrentItem.ValueChanged -= OnChangedItemData;
+        InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
+    }
+
+    private void OnEndTouchFromScreen(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
+    {
+        if (!ItemController.IsClickingItemObject)
+            m_CurrentItem.Value = null;
     }
 
     private void OnChangedItemData(EventSource source, ItemController oldValue, ItemController newValue)
@@ -31,11 +39,11 @@ public class ItemSelectUIScript : MonoBehaviour
         if (newValue == null)
         {
             m_ItemEditorUI.EnableOrDisableTheItemEditor(false);
-            m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, newValue.gameObject));
         }
         else
         {
             m_ItemEditorUI.EnableOrDisableTheItemEditor(true);
+            m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, newValue.gameObject));
         }
     }
 }

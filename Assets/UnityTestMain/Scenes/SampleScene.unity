@@ -594,6 +594,7 @@ GameObject:
   - component: {fileID: 628509687}
   - component: {fileID: 628509689}
   - component: {fileID: 628509688}
+  - component: {fileID: 628509690}
   m_Layer: 6
   m_Name: MovementPanel
   m_TagString: Untagged
@@ -660,6 +661,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 628509686}
   m_CullTransparentMesh: 1
+--- !u!114 &628509690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628509686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e4312ce8643e54196a7b60060fc39f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AreaOfEditor: {fileID: 628509687}
 --- !u!1 &633965046
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,8 +726,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424b003122eeafb45a5d926379cb4550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CurrentItem: {fileID: 0}
-  m_ItemEditorUI: {fileID: 0}
+  m_CurrentItem: {fileID: 11400000, guid: 32f509b39996209498299eeaa8821bd0, type: 2}
+  m_ItemEditorUI: {fileID: 628509690}
 --- !u!114 &633965049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1345,6 +1359,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1418,6 +1433,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 64
+  m_MaxRayIntersections: 0
 --- !u!1 &987456777
 GameObject:
   m_ObjectHideFlags: 0
