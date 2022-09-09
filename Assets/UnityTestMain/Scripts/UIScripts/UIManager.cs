@@ -10,9 +10,11 @@ public class UIManager : SingletonPersistent<UIManager>
     [SerializeField] private Button m_CloseItemPanel;
 
     public delegate void DefaultButtonEvent();
+    public delegate void ItemEditorEvent(ItemController item);
 
     public event DefaultButtonEvent OnViewAllItem;
     public event DefaultButtonEvent OnCloseItemPanel;
+    public event ItemEditorEvent OnEnableItemEditor;
     public override void Awake()
     {
         base.Awake();
