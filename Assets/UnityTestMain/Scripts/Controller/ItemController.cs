@@ -34,9 +34,15 @@ public class ItemController : MonoBehaviour
         {
             Ray ray = mainCam.ScreenPointToRay(currentTouch.screenPosition);
             if (Physics.Raycast(ray.origin, ray.direction, 1 << m_CurrentLayer))
+            {
                 GameManager.Instance.clickState = EClickState.FirstTapOnObject;
+                m_CurrentItem.Value = null;
+            }
             else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
+            {
                 GameManager.Instance.clickState = EClickState.NormalMovement;
+                m_CurrentItem.Value = null;
+            }
         }
     }
 
@@ -46,9 +52,15 @@ public class ItemController : MonoBehaviour
         {
             Ray ray = mainCam.ScreenPointToRay(currentTouch.screenPosition);
             if (Physics.Raycast(ray.origin, ray.direction, 1 << m_CurrentLayer) && GameManager.Instance.clickState == EClickState.FirstTapOnObject)
+            {
                 GameManager.Instance.clickState = EClickState.NormalMovement;
+                m_CurrentItem.Value = null;
+            }
             else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
+            {
                 GameManager.Instance.clickState = EClickState.NormalMovement;
+                m_CurrentItem.Value = null;
+            }
         }
     }
 
@@ -63,7 +75,10 @@ public class ItemController : MonoBehaviour
                 m_CurrentItem.Value = this;
             }
             else if (Physics.Raycast(ray.origin, ray.direction, 1 << m_PlaneLayer))
+            {
                 GameManager.Instance.clickState = EClickState.NormalMovement;
+                m_CurrentItem.Value = null;
+            }
         }
     }
 }

@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class ItemEditorUIScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private RectTransform m_AreaOfEditor;
+    public void EnableOrDisableTheItemEditor(bool state)
     {
-        
+        gameObject.SetActive(state);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PositionTheUIArea(Rect areaRect)
     {
-        
+        m_AreaOfEditor.rect.Set(areaRect.x, areaRect.y, areaRect.width, areaRect.height);
     }
 }
