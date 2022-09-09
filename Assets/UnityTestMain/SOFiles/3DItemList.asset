@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d070f31fad96274dba0f10733fc3112, type: 3}
   m_Name: 3DItemList
   m_EditorClassIdentifier: 
-  scriptableObjectValue:
+  StaticValue:
   - itemPrefab: {fileID: 7426182463799179059, guid: c7be182941379354b91635d859334fbf, type: 3}
     itemImage: {fileID: 21300000, guid: 39898668794cbfe4d8440f458c26e51a, type: 3}
   - itemPrefab: {fileID: 9144243293762273528, guid: 7675eb8054e0a0f439d80a5ff7414789, type: 3}

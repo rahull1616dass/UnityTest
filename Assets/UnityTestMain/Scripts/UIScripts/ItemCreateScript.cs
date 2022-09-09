@@ -17,7 +17,7 @@ public class ItemCreateScript : MonoBehaviour
 
     private void CreateAllItems()
     {
-        foreach (GameItems item in m_allItemSO.scriptableObjectValue)
+        foreach (GameItems item in m_allItemSO.Value)
         {
             ItemButtonScript t_itemButton = Instantiate(m_ItemInstantiateButtonPrefab, m_ButtonParentContent);
             t_itemButton.CreateButton(item.itemImage, item.itemPrefab);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SerializedValue<T> : RuntimeValue<T>
 {
-    public T scriptableObjectValue;
+    [SerializeField] private T StaticValue;
 
     private void Awake()
     {
@@ -14,6 +14,6 @@ public class SerializedValue<T> : RuntimeValue<T>
 
     private void InitializeRuntimeValue()
     {
-        runtimeValue = scriptableObjectValue;
+        runtimeValue = StaticValue;
     }
 }
