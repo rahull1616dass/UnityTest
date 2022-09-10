@@ -8,6 +8,7 @@ public class ItemCreateScript : MonoBehaviour
     [SerializeField] private ItemsSOBluePrint m_allItemSO;
     [SerializeField] private ItemButtonScript m_ItemInstantiateButtonPrefab;
     [SerializeField] private Transform m_ButtonParentContent;
+    [SerializeField] private CurrentSelectedItemBluePrint m_CurrentItem;
 
 
     private void Start()
@@ -25,8 +26,8 @@ public class ItemCreateScript : MonoBehaviour
         }
     }
 
-    private void CreateItemOnScene(GameObject items)
+    private void CreateItemOnScene(ItemController items)
     {
-        Instantiate(items);
+        m_CurrentItem.Value = Instantiate(items);
     }
 }

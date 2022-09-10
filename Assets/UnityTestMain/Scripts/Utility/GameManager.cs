@@ -5,12 +5,12 @@ using UnityEngine;
 public enum EClickState
 {
     None = -1,
-    NormalMovement,
-    FirstTapOnObject,
-    ObjectTapped
+    Default,
+    ItemClicked,
+    ItemUIClicked
 }
 
 public class GameManager : Singleton<GameManager>
 {
-    public EClickState clickState = EClickState.NormalMovement;
+    public EClickState clickState = EClickState.Default;
 }

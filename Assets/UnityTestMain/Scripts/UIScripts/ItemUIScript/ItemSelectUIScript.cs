@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ItemSelectUIScript : MonoBehaviour
 {
-    [SerializeField] private CurrentSelectedItemBluePrint m_CurrentItem;
     [SerializeField] private ItemEditorUIScript m_ItemEditorUI;
 
     private Camera mainCam;
@@ -18,20 +17,28 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnEnable()
     {
-        m_CurrentItem.ValueChanged += OnChangedItemData;
+        UIManager.Instance._currentSelectedItem.ValueChanged += OnChangedItemData;
+        UIManager.Instance.OnDragItem += AreaChange;
         InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
     }
 
     private void OnDisable()
     {
-        m_CurrentItem.ValueChanged -= OnChangedItemData;
+        UIManager.Instance._currentSelectedItem.ValueChanged -= OnChangedItemData;
+        UIManager.Instance.OnDragItem -= AreaChange;
         InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
+    }
+
+    private void AreaChange(Vector2 prevFramePos, Vector2 delta)
+    {
+        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, UIManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
     private void OnEndTouchFromScreen(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if (!ItemController.IsClickingItemObject)
-            m_CurrentItem.Value = null;
+        if (GameManager.Instance.clickState != EClickState.ItemClicked&& GameManager.Instance.clickState!= EClickState.ItemUIClicked)
+            UIManager.Instance._currentSelectedItem.Value = null;
+        GameManager.Instance.clickState = EClickState.Default;
     }
 
     private void OnChangedItemData(EventSource source, ItemController oldValue, ItemController newValue)
@@ -46,4 +53,6 @@ public class ItemSelectUIScript : MonoBehaviour
             m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, newValue.gameObject));
         }
     }
+
+
 }
