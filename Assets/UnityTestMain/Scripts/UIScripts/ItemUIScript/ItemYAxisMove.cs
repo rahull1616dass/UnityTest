@@ -1,21 +1,20 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
-public class ItemScaleUIScript : MonoBehaviour
+public class ItemYAxisMove : MonoBehaviour
 {
-    [SerializeField] private float m_ScaleSpeed = 1f;
-
+    [SerializeField] private float m_YMovementSpeed = 1f;
     private EventTrigger thisObjectClickEvent;
 
-    public delegate void ScaleDelegate(float scaleVal);
-    public event ScaleDelegate OnScale;
+    public delegate void YMovementDelegate(float scaleVal);
+    public event YMovementDelegate OnYMovement;
 
     private Vector2 touchPosOnPrevFrame;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         CreateAndAddTrigger();
     }
@@ -32,10 +31,10 @@ public class ItemScaleUIScript : MonoBehaviour
 
     private void OnInputMove(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if(touchIndex == 0 && GameManager.Instance.clickState == EClickState.ItemUIScale)
+        if (touchIndex == 0 && GameManager.Instance.clickState == EClickState.ItemYMovement)
         {
             Vector2 delta = currentTouch.screenPosition - touchPosOnPrevFrame;
-            OnScale?.Invoke((delta.y + delta.x) * m_ScaleSpeed);
+            OnYMovement?.Invoke(delta.y * m_YMovementSpeed);
             touchPosOnPrevFrame = currentTouch.screenPosition;
         }
     }
@@ -53,7 +52,7 @@ public class ItemScaleUIScript : MonoBehaviour
 
     private void OnPointerDown(BaseEventData eventData)
     {
-        GameManager.Instance.clickState = EClickState.ItemUIScale;
+        GameManager.Instance.clickState = EClickState.ItemYMovement;
         touchPosOnPrevFrame = ((PointerEventData)eventData).position;
     }
 }

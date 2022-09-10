@@ -9,6 +9,7 @@ using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 public class ItemController : MonoBehaviour
 {
     [SerializeField] private CurrentSelectedItemBluePrint m_CurrentSelectedItem;
+    [SerializeField] private float minScale = 0.1f;
 
     Camera mainCam;
     private Transform thisTransform;
@@ -42,21 +43,41 @@ public class ItemController : MonoBehaviour
     private void OnEnable()
     {
         UIManager.Instance.OnDragItem += MoveItemOnXZPlane;
+        UIManager.Instance.OnScale += OnScaleObject;
+        UIManager.Instance.OnYMovement += OnYMovement;
     }
 
     private void OnDisable()
     {
         UIManager.Instance.OnDragItem -= MoveItemOnXZPlane;
+        UIManager.Instance.OnScale -= OnScaleObject;
+        UIManager.Instance.OnYMovement -= OnYMovement;
+    }
+
+    private void OnYMovement(float deltaValueForY)
+    {
+       thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + deltaValueForY, thisTransform.position.z);
     }
 
     private void MoveItemOnXZPlane(Vector2 prevFramePos, Vector2 newFramePos)
     {
+        if (this != m_CurrentSelectedItem.Value)
+            return;
         float distanceFromCam = Vector3.Distance(mainCam.transform.position, transform.position);
         Vector3 prevFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(prevFramePos.x, prevFramePos.y, distanceFromCam));
         Vector3 newFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(newFramePos.x, newFramePos.y, distanceFromCam));
         Vector3 delta = prevFrameOnWorld - newFrameOnWorld;
         Vector3 newPos = new Vector3(thisTransform.position.x - delta.x, thisTransform.position.y, thisTransform.position.z - delta.y);
-        transform.position = newPos;
+        thisTransform.position = newPos;
+    }
+
+    private void OnScaleObject(float scaleVal)
+    {
+        if (this != m_CurrentSelectedItem.Value)
+            return;
+        float currentScale = thisTransform.localScale.x;
+        currentScale = Math.Max(currentScale + scaleVal, minScale);
+        thisTransform.localScale = new Vector3(currentScale, currentScale, currentScale);
     }
 
     private void CreateAndAddTrigger()
@@ -80,17 +101,5 @@ public class ItemController : MonoBehaviour
     {
         Debug.Log("Clicking");
         m_CurrentSelectedItem.Value = this;
-    }
-
-    public void OnMoveItem(Vector3 position)
-    {
-
-        Debug.Log("Clicking");
-        thisTransform.position = position;
-    }
-
-    public void OnScaleItem(float ScaleValue)
-    {
-        thisTransform.localScale = new Vector3(ScaleValue, ScaleValue, ScaleValue);
     }
 }

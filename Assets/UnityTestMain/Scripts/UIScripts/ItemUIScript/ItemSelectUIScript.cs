@@ -19,6 +19,8 @@ public class ItemSelectUIScript : MonoBehaviour
     {
         UIManager.Instance._currentSelectedItem.ValueChanged += OnChangedItemData;
         UIManager.Instance.OnDragItem += AreaChange;
+        UIManager.Instance.OnScale += OnScaleOrYChange;
+        UIManager.Instance.OnYMovement += OnScaleOrYChange;
         InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
     }
 
@@ -26,7 +28,14 @@ public class ItemSelectUIScript : MonoBehaviour
     {
         UIManager.Instance._currentSelectedItem.ValueChanged -= OnChangedItemData;
         UIManager.Instance.OnDragItem -= AreaChange;
+        UIManager.Instance.OnScale -= OnScaleOrYChange;
+        UIManager.Instance.OnYMovement -= OnScaleOrYChange;
         InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
+    }
+
+    private void OnScaleOrYChange(float scaleVal)
+    {
+        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, UIManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
     private void AreaChange(Vector2 prevFramePos, Vector2 delta)
@@ -36,7 +45,7 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnEndTouchFromScreen(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if (GameManager.Instance.clickState != EClickState.ItemClicked&& GameManager.Instance.clickState!= EClickState.ItemUIClicked)
+        if (GameManager.Instance.clickState == EClickState.Default)
             UIManager.Instance._currentSelectedItem.Value = null;
         GameManager.Instance.clickState = EClickState.Default;
     }

@@ -6,8 +6,11 @@ public enum EClickState
 {
     None = -1,
     Default,
+    MovingAround,
     ItemClicked,
-    ItemUIClicked
+    ItemUIClicked,
+    ItemUIScale,
+    ItemYMovement
 }
 
 public class GameManager : Singleton<GameManager>
