@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[DefaultExecutionOrder(-1)]
-public class UIManager : SingletonPersistent<UIManager>
+public class UIManager : MonoBehaviour
 {
     [SerializeField] private Button m_AllItemButton;
     [SerializeField] private Button m_CloseItemPanel;
@@ -52,8 +51,8 @@ public class UIManager : SingletonPersistent<UIManager>
         m_ItemPanelInstance.OnResetItem += OnItemReset;
         m_DeleteButtonScriptInstance.OnDelete += OnItemDelete;
 
-        SessionManager.Instance.OnEntryFirstSessionData += OnFirstMove;
-        SessionManager.Instance.OnSessionDataEmpty += OnLastReset;
+        GameManager.Instance._sessionManagerInstance.OnEntryFirstSessionData += OnFirstMove;
+        GameManager.Instance._sessionManagerInstance.OnSessionDataEmpty += OnLastReset;
     }
 
     private void OnDisable()
@@ -64,8 +63,8 @@ public class UIManager : SingletonPersistent<UIManager>
         m_ItemPanelInstance.OnResetItem -= OnItemReset;
         m_DeleteButtonScriptInstance.OnDelete -= OnItemDelete;
 
-        SessionManager.Instance.OnEntryFirstSessionData -= OnFirstMove;
-        SessionManager.Instance.OnSessionDataEmpty -= OnLastReset;
+        GameManager.Instance._sessionManagerInstance.OnEntryFirstSessionData -= OnFirstMove;
+        GameManager.Instance._sessionManagerInstance.OnSessionDataEmpty -= OnLastReset;
     }
 
     private void OnItemDelete()

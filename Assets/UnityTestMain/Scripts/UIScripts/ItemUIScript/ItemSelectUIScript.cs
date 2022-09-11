@@ -18,21 +18,21 @@ public class ItemSelectUIScript : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance._currentSelectedItem.ValueChanged += OnChangedItemData;
-        UIManager.Instance.OnDragItem += AreaChange;
-        UIManager.Instance.OnScale += OnScaleOrYChange;
-        UIManager.Instance.OnYMovement += OnScaleOrYChange;
+        GameManager.Instance._uiManagerInstance.OnDragItem += AreaChange;
+        GameManager.Instance._uiManagerInstance.OnScale += OnScaleOrYChange;
+        GameManager.Instance._uiManagerInstance.OnYMovement += OnScaleOrYChange;
         InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
-        UIManager.Instance.OnDeleteItem += OnDeleteItem;
+        GameManager.Instance._uiManagerInstance.OnDeleteItem += OnDeleteItem;
     }
 
     private void OnDisable()
     {
         GameManager.Instance._currentSelectedItem.ValueChanged -= OnChangedItemData;
-        UIManager.Instance.OnDragItem -= AreaChange;
-        UIManager.Instance.OnScale -= OnScaleOrYChange;
-        UIManager.Instance.OnYMovement -= OnScaleOrYChange;
+        GameManager.Instance._uiManagerInstance.OnDragItem -= AreaChange;
+        GameManager.Instance._uiManagerInstance.OnScale -= OnScaleOrYChange;
+        GameManager.Instance._uiManagerInstance.OnYMovement -= OnScaleOrYChange;
         InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
-        UIManager.Instance.OnDeleteItem -= OnDeleteItem;
+        GameManager.Instance._uiManagerInstance.OnDeleteItem -= OnDeleteItem;
     }
 
     private void OnDeleteItem()

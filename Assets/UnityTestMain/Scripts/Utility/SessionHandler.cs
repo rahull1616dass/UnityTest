@@ -12,22 +12,20 @@ public enum EItemChangeType
     Create
 }
 
-[DefaultExecutionOrder(-3)]
-public class SessionManager : SingletonPersistent<SessionManager>
+public class SessionHandler : MonoBehaviour
 {
     [SerializeField] private SessionDataSOBluePrint privateSessionData;
     public delegate void SessionDataChangeDelegate();
     public event SessionDataChangeDelegate OnSessionDataEmpty;
     public event SessionDataChangeDelegate OnEntryFirstSessionData;
 
-    public delegate void LoadOldSession(SerializedSessionDataList previousSessionDataList);
+    public delegate void LoadOldSession(SerializedSessionDataList previousSessionDataList, Action<List<GameObject>> OnLoadFinished);
     public event LoadOldSession OnLoadOldSession;
 
     private SerializedSessionDataList allSessionDataListToSave;
 
-    public override void Awake()
+    private void Start()
     {
-        base.Awake();
         allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
     }
 
@@ -50,7 +48,14 @@ public class SessionManager : SingletonPersistent<SessionManager>
     public void DoLoadOldSession()
     {
         Debug.Log(Application.persistentDataPath);
-        OnLoadOldSession?.Invoke((SerializedSessionDataList)FileHandler.LoadData("GameState", allSessionDataListToSave));
+        OnLoadOldSession?.Invoke((SerializedSessionDataList)FileHandler.LoadData("GameState", allSessionDataListToSave), OnFinishedLoadingData);
+    }
+
+    private void OnFinishedLoadingData(List<GameObject> OldSessionObjects)
+    {
+        allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
+        foreach (GameObject gameObj in OldSessionObjects)
+            SaveSessionDataToLocal(gameObj, EItemChangeType.Create);
     }
 
     public void SetSessionData(EItemChangeType changeType = EItemChangeType.Movement)
@@ -64,12 +69,13 @@ public class SessionManager : SingletonPersistent<SessionManager>
             OnEntryFirstSessionData?.Invoke();
         SessionData newData = new SessionData(currentObject, currentObject.transform.position, currentObject.transform.localScale, changeType);
         privateSessionData.Value.Push(newData);
-        SaveSessionDataToLocal(newData);
     }
 
-    private void SaveSessionDataToLocal(SessionData newData)
+
+
+    public void SaveSessionDataToLocal(GameObject item, EItemChangeType changeType = EItemChangeType.Movement)
     {
-        SerializedSessionData localData = new SerializedSessionData(newData.item.GetInstanceID(), newData.item.tag, newData.itemPosition, newData.itemScale, newData.itemChangeType);
+        SerializedSessionData localData = new SerializedSessionData(item.GetInstanceID(), item.tag, item.transform.position, item.transform.localScale, changeType);
         allSessionDataListToSave.allDataList.Add(localData);
         FileHandler.SaveData("GameState", allSessionDataListToSave);
     }

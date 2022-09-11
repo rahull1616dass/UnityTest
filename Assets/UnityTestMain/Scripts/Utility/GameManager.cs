@@ -21,6 +21,9 @@ public class GameManager : SingletonPersistent<GameManager>
     private EGameState gameState = EGameState.Default;
     public CurrentSelectedItemBluePrint _currentSelectedItem;
 
+    public SessionHandler _sessionManagerInstance;
+    public UIManager _uiManagerInstance;
+
     public EGameState _gameState
     {
         get 
@@ -29,11 +32,11 @@ public class GameManager : SingletonPersistent<GameManager>
         }
         set
         {
-            OnClickStateChange?.Invoke(gameState, value);
+            OnGameStateChange?.Invoke(gameState, value);
             gameState = value;
         }
     }
 
-    public delegate void ClickStateChangeDelegate(EGameState oldState, EGameState newState);
-    public event ClickStateChangeDelegate OnClickStateChange;
+    public delegate void GameStateChangeDelegate(EGameState oldState, EGameState newState);
+    public event GameStateChangeDelegate OnGameStateChange;
 }

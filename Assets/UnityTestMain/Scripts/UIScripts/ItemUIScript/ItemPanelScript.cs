@@ -12,21 +12,21 @@ public class ItemPanelScript : MonoBehaviour
     public event ResetItem OnResetItem;
     private void OnEnable()
     {
-        UIManager.Instance.OnViewAllItem += EnableAllItemPanel;
-        UIManager.Instance.OnCloseItemPanel += CloseAllItemPanel;
-        UIManager.Instance.OnClickUndo += OnClickUndo;
+        GameManager.Instance._uiManagerInstance.OnViewAllItem += EnableAllItemPanel;
+        GameManager.Instance._uiManagerInstance.OnCloseItemPanel += CloseAllItemPanel;
+        GameManager.Instance._uiManagerInstance.OnClickUndo += OnClickUndo;
     }
 
     private void OnDisable()
     {
-        UIManager.Instance.OnViewAllItem -= EnableAllItemPanel;
-        UIManager.Instance.OnCloseItemPanel -= CloseAllItemPanel;
-        UIManager.Instance.OnClickUndo -= OnClickUndo;
+        GameManager.Instance._uiManagerInstance.OnViewAllItem -= EnableAllItemPanel;
+        GameManager.Instance._uiManagerInstance.OnCloseItemPanel -= CloseAllItemPanel;
+        GameManager.Instance._uiManagerInstance.OnClickUndo -= OnClickUndo;
     }
 
     private void OnClickUndo()
     {
-        SessionData dataToReset = SessionManager.Instance.sessionData;
+        SessionData dataToReset = GameManager.Instance._sessionManagerInstance.sessionData;
         if (dataToReset != null)
         {
             OnResetItem?.Invoke(dataToReset);
