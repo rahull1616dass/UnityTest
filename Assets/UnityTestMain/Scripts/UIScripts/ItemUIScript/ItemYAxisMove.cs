@@ -31,7 +31,7 @@ public class ItemYAxisMove : MonoBehaviour
 
     private void OnInputMove(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if (touchIndex == 0 && GameManager.Instance.clickState == EClickState.ItemYMovement)
+        if (touchIndex == 0 && GameManager.Instance._clickStateProp == EClickState.ItemYMovement)
         {
             Vector2 delta = currentTouch.screenPosition - touchPosOnPrevFrame;
             OnYMovement?.Invoke(delta.y * m_YMovementSpeed);
@@ -52,7 +52,7 @@ public class ItemYAxisMove : MonoBehaviour
 
     private void OnPointerDown(BaseEventData eventData)
     {
-        GameManager.Instance.clickState = EClickState.ItemYMovement;
+        GameManager.Instance._clickStateProp = EClickState.ItemYMovement;
         touchPosOnPrevFrame = ((PointerEventData)eventData).position;
     }
 }

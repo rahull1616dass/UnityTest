@@ -25,31 +25,13 @@ public class ItemController : MonoBehaviour
         minY = thisTransform.position.y;
     }
 
-    private void OnEnable()
+    public void MoveInY(float deltaValueForY)
     {
-        UIManager.Instance.OnDragItem += MoveItemOnXZPlane;
-        UIManager.Instance.OnScale += OnScaleObject;
-        UIManager.Instance.OnYMovement += OnYMovement;
-    }
-
-    private void OnDisable()
-    {
-        UIManager.Instance.OnDragItem -= MoveItemOnXZPlane;
-        UIManager.Instance.OnScale -= OnScaleObject;
-        UIManager.Instance.OnYMovement -= OnYMovement;
-    }
-
-    private void OnYMovement(float deltaValueForY)
-    {
-        if (this != m_CurrentSelectedItem.Value)
-            return;
         thisTransform.position = new Vector3(thisTransform.position.x, Math.Max(thisTransform.position.y + deltaValueForY,minY), thisTransform.position.z);
     }
 
-    private void MoveItemOnXZPlane(Vector2 prevFramePos, Vector2 newFramePos)
+    public void MoveInXZ(Vector2 prevFramePos, Vector2 newFramePos)
     {
-        if (this != m_CurrentSelectedItem.Value)
-            return;
         float distanceFromCam = Vector3.Distance(mainCam.transform.position, transform.position);
         Vector3 prevFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(prevFramePos.x, prevFramePos.y, distanceFromCam));
         Vector3 newFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(newFramePos.x, newFramePos.y, distanceFromCam));
@@ -58,10 +40,8 @@ public class ItemController : MonoBehaviour
         thisTransform.position = newPos;
     }
 
-    private void OnScaleObject(float scaleVal)
+    public void Scale(float scaleVal)
     {
-        if (this != m_CurrentSelectedItem.Value)
-            return;
         float currentScale = thisTransform.localScale.x;
         currentScale = Math.Max(currentScale + scaleVal, minScale);
         thisTransform.localScale = new Vector3(currentScale, currentScale, currentScale);
@@ -78,7 +58,7 @@ public class ItemController : MonoBehaviour
 
         EventTrigger.Entry onPointerDownEntry = new EventTrigger.Entry();
         onPointerDownEntry.eventID = EventTriggerType.PointerDown;
-        onPointerDownEntry.callback.AddListener((eventData) => { GameManager.Instance.clickState = EClickState.ItemClicked; });
+        onPointerDownEntry.callback.AddListener((eventData) => { GameManager.Instance._clickStateProp = EClickState.ItemClicked; });
         thisObjectClickEvent.triggers.Add(onPointerDownEntry);
         thisObjectClickEvent.triggers.Add(onPointerClickEntry);
     }
@@ -86,7 +66,6 @@ public class ItemController : MonoBehaviour
 
     private void OnClickThisObject()
     {
-        Debug.Log("Clicking");
         m_CurrentSelectedItem.Value = this;
     }
 }

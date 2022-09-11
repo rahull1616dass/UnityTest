@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SerializedValue<T> : RuntimeValue<T>
 {
-    [SerializeField] private T StaticValue;
+    public T StaticValue;
 
     private void Awake()
     {

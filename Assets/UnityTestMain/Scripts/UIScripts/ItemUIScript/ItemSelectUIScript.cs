@@ -17,7 +17,7 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnEnable()
     {
-        UIManager.Instance._currentSelectedItem.ValueChanged += OnChangedItemData;
+        GameManager.Instance._currentSelectedItem.ValueChanged += OnChangedItemData;
         UIManager.Instance.OnDragItem += AreaChange;
         UIManager.Instance.OnScale += OnScaleOrYChange;
         UIManager.Instance.OnYMovement += OnScaleOrYChange;
@@ -26,7 +26,7 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnDisable()
     {
-        UIManager.Instance._currentSelectedItem.ValueChanged -= OnChangedItemData;
+        GameManager.Instance._currentSelectedItem.ValueChanged -= OnChangedItemData;
         UIManager.Instance.OnDragItem -= AreaChange;
         UIManager.Instance.OnScale -= OnScaleOrYChange;
         UIManager.Instance.OnYMovement -= OnScaleOrYChange;
@@ -35,19 +35,21 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnScaleOrYChange(float scaleVal)
     {
-        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, UIManager.Instance._currentSelectedItem.Value.gameObject));
+        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, GameManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
     private void AreaChange(Vector2 prevFramePos, Vector2 delta)
     {
-        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, UIManager.Instance._currentSelectedItem.Value.gameObject));
+        m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, GameManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
     private void OnEndTouchFromScreen(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if (GameManager.Instance.clickState == EClickState.Default)
-            UIManager.Instance._currentSelectedItem.Value = null;
-        GameManager.Instance.clickState = EClickState.Default;
+        if (GameManager.Instance._clickStateProp == EClickState.Default)
+        {
+            GameManager.Instance._currentSelectedItem.Value = null;
+        }
+        GameManager.Instance._clickStateProp = EClickState.Default;
     }
 
     private void OnChangedItemData(EventSource source, ItemController oldValue, ItemController newValue)
