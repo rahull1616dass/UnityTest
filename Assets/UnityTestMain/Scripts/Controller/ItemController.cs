@@ -14,30 +14,15 @@ public class ItemController : MonoBehaviour
     Camera mainCam;
     private Transform thisTransform;
     private EventTrigger thisObjectClickEvent;
+    private float minY;
 
-    public Vector3 currentPosition { 
-        get {
-                if (thisTransform == null)
-                    thisTransform = transform;
-                return thisTransform.position; 
-        } 
-    }
-
-    public Vector3 currentScale
-    {
-        get
-        {
-            if (thisTransform == null)
-                thisTransform = transform;
-            return thisTransform.localScale;
-        }
-    }
 
     private void Start()
     {
         thisTransform = transform;
         CreateAndAddTrigger();
         mainCam = Camera.main;
+        minY = thisTransform.position.y;
     }
 
     private void OnEnable()
@@ -56,7 +41,9 @@ public class ItemController : MonoBehaviour
 
     private void OnYMovement(float deltaValueForY)
     {
-       thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + deltaValueForY, thisTransform.position.z);
+        if (this != m_CurrentSelectedItem.Value)
+            return;
+        thisTransform.position = new Vector3(thisTransform.position.x, Math.Max(thisTransform.position.y + deltaValueForY,minY), thisTransform.position.z);
     }
 
     private void MoveItemOnXZPlane(Vector2 prevFramePos, Vector2 newFramePos)

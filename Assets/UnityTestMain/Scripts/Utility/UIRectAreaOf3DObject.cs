@@ -8,7 +8,7 @@ public class UIRectAreaOf3DObject
 {
     public static Rect CovertObjectToRect(Camera cam, GameObject ObjectIn3DSpace)
     {
-        var renderer = ObjectIn3DSpace.GetComponent<Renderer>();
+        var renderer = ObjectIn3DSpace.GetComponentInChildren<Renderer>();
         Vector3 centerOfTheObject = renderer.bounds.center;
         Vector3 extentionOfThePbjectFromCenter = renderer.bounds.extents;
         Vector2[] extentPoints = new Vector2[8]
