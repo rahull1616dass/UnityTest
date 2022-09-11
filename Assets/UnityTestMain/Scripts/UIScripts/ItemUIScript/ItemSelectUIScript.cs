@@ -52,11 +52,11 @@ public class ItemSelectUIScript : MonoBehaviour
 
     private void OnEndTouchFromScreen(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if (GameManager.Instance._clickStateProp == EClickState.Default)
+        if (GameManager.Instance._gameState == EGameState.Default)
         {
             GameManager.Instance._currentSelectedItem.Value = null;
         }
-        GameManager.Instance._clickStateProp = EClickState.Default;
+        GameManager.Instance._gameState = EGameState.Default;
     }
 
     private void OnChangedItemData(EventSource source, ItemController oldValue, ItemController newValue)

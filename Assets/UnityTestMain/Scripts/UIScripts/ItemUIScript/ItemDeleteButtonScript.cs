@@ -27,7 +27,7 @@ public class ItemDeleteButtonScript : MonoBehaviour
 
     private void OnPointerDown(BaseEventData eventData)
     {
-        GameManager.Instance._clickStateProp = EClickState.ItemDelete;
+        GameManager.Instance._gameState = EGameState.ItemDelete;
         OnDelete?.Invoke();
     }
 }

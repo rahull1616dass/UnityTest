@@ -58,7 +58,7 @@ public class ItemController : MonoBehaviour
 
         EventTrigger.Entry onPointerDownEntry = new EventTrigger.Entry();
         onPointerDownEntry.eventID = EventTriggerType.PointerDown;
-        onPointerDownEntry.callback.AddListener((eventData) => { GameManager.Instance._clickStateProp = EClickState.ItemClicked; });
+        onPointerDownEntry.callback.AddListener((eventData) => { GameManager.Instance._gameState = EGameState.ItemClicked; });
         thisObjectClickEvent.triggers.Add(onPointerDownEntry);
         thisObjectClickEvent.triggers.Add(onPointerClickEntry);
     }

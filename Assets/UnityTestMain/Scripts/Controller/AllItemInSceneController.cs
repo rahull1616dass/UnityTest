@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ public class AllItemInSceneController : MonoBehaviour
 
     private void Start()
     {
-        thisTransform = transform;    
+        thisTransform = transform;
+        SessionManager.Instance.DoLoadOldSession();
     }
 
     private void OnEnable()
@@ -22,6 +24,7 @@ public class AllItemInSceneController : MonoBehaviour
         UIManager.Instance.OnResetItem += OnResetItem;
         UIManager.Instance.OnDeleteItem += OnDeleteItem;
         GameManager.Instance.OnClickStateChange += OnClickStateChange;
+        SessionManager.Instance.OnLoadOldSession += OnLoadOldSession;
     }
 
     private void OnDisable()
@@ -32,31 +35,52 @@ public class AllItemInSceneController : MonoBehaviour
         UIManager.Instance.OnResetItem -= OnResetItem;
         UIManager.Instance.OnDeleteItem -= OnDeleteItem;
         GameManager.Instance.OnClickStateChange -= OnClickStateChange;
+        SessionManager.Instance.OnLoadOldSession -= OnLoadOldSession;
     }
 
+    private void OnLoadOldSession(SessionDataSOBluePrint datas)
+    {
+        if (datas.Value == null)
+            return;
+        int TotalData = datas.Value.Count;
+        for (int i = 0; i < TotalData; i++)
+        {
+            SessionData data = datas.Value.Pop();
+            GameObject obj = Instantiate(data.item, thisTransform);
+            obj.transform.position = data.itemPosition;
+            obj.transform.localScale = data.itemScale;
+        }
+    }
     private void OnDeleteItem()
     {
         GameManager.Instance._currentSelectedItem.Value.gameObject.SetActive(false);
     }
 
-    private void OnClickStateChange(EClickState oldClickState, EClickState newClickState)
+    private void OnClickStateChange(EGameState oldClickState, EGameState newClickState)
     {
-        if (newClickState == EClickState.Default ||
-            newClickState == EClickState.ItemClicked
+        if (newClickState == EGameState.Default ||
+            newClickState == EGameState.ItemClicked
             || GameManager.Instance._currentSelectedItem.Value==null)
             return;
         Debug.Log("Adding");
-        SessionManager.Instance.SetSessionData(newClickState == EClickState.ItemDelete ? EItemChangeType.Delete:EItemChangeType.Movement);
+        SessionManager.Instance.SetSessionData(newClickState == EGameState.ItemDelete ? EItemChangeType.Delete
+            : newClickState == EGameState.ItemCreated ? EItemChangeType.Create : EItemChangeType.Movement);
     }
 
     private void OnResetItem(SessionData data)
     {
         Debug.Log("Removing");
-        Transform itemToReset = data.item;
+        GameObject itemToReset = data.item;
         if (data.itemChangeType == EItemChangeType.Delete)
             itemToReset.gameObject.SetActive(true);
-        itemToReset.position = data.itemPosition;
-        itemToReset.localScale = data.itemScale;
+        else if (data.itemChangeType == EItemChangeType.Create)
+        {
+            Destroy(itemToReset);
+            GameManager.Instance._currentSelectedItem.Value = null;
+            return;
+        }
+        itemToReset.transform.position = data.itemPosition;
+        itemToReset.transform.localScale = data.itemScale;
     }
 
     private void OnYMovement(float deltaValueForY)

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EClickState
+public enum EGameState
 {
     None = -1,
     Default,
+    ItemCreated,
     MovingAround,
     ItemClicked,
     ItemUIClicked,
@@ -17,22 +18,22 @@ public enum EClickState
 [DefaultExecutionOrder(-2)]
 public class GameManager : SingletonPersistent<GameManager>
 {
-    private EClickState clickState = EClickState.Default;
+    private EGameState gameState = EGameState.Default;
     public CurrentSelectedItemBluePrint _currentSelectedItem;
 
-    public EClickState _clickStateProp
+    public EGameState _gameState
     {
         get 
         { 
-            return clickState;
+            return gameState;
         }
         set
         {
-            OnClickStateChange?.Invoke(clickState, value);
-            clickState = value;
+            OnClickStateChange?.Invoke(gameState, value);
+            gameState = value;
         }
     }
 
-    public delegate void ClickStateChangeDelegate(EClickState oldClickState, EClickState newClickState);
+    public delegate void ClickStateChangeDelegate(EGameState oldState, EGameState newState);
     public event ClickStateChangeDelegate OnClickStateChange;
 }

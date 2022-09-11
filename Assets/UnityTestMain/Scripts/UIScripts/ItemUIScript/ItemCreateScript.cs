@@ -30,5 +30,6 @@ public class ItemCreateScript : MonoBehaviour
     private void CreateItemOnScene(ItemController items)
     {
         m_CurrentItem.Value = Instantiate(items, m_ItemTransform);
+        GameManager.Instance._gameState = EGameState.ItemCreated;
     }
 }

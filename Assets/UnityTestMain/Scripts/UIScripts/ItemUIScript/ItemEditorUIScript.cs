@@ -44,7 +44,7 @@ public class ItemEditorUIScript : MonoBehaviour
     private void OnPointerDownToEditor(BaseEventData eventData)
     {
         Debug.Log("ClickingUI");
-        GameManager.Instance._clickStateProp = EClickState.ItemUIClicked;
+        GameManager.Instance._gameState = EGameState.ItemUIClicked;
         PointerEventData data = (PointerEventData)eventData;
         prevFrameDragPos = data.position;
     }

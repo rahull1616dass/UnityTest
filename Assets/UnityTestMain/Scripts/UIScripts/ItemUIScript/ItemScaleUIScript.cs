@@ -32,7 +32,7 @@ public class ItemScaleUIScript : MonoBehaviour
 
     private void OnInputMove(UnityEngine.InputSystem.EnhancedTouch.Touch currentTouch, int touchIndex)
     {
-        if(touchIndex == 0 && GameManager.Instance._clickStateProp == EClickState.ItemUIScale)
+        if(touchIndex == 0 && GameManager.Instance._gameState == EGameState.ItemUIScale)
         {
             Vector2 delta = currentTouch.screenPosition - touchPosOnPrevFrame;
             OnScale?.Invoke((delta.y + delta.x) * m_ScaleSpeed);
@@ -53,7 +53,7 @@ public class ItemScaleUIScript : MonoBehaviour
 
     private void OnPointerDown(BaseEventData eventData)
     {
-        GameManager.Instance._clickStateProp = EClickState.ItemUIScale;
+        GameManager.Instance._gameState = EGameState.ItemUIScale;
         touchPosOnPrevFrame = ((PointerEventData)eventData).position;
     }
 }

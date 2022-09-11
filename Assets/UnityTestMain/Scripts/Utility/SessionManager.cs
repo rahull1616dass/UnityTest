@@ -8,27 +8,29 @@ public enum EItemChangeType
 {
     None = -1,
     Movement,
-    Delete
+    Delete,
+    Create
 }
 
-[DefaultExecutionOrder(-2)]
-public class SessionManager : Singleton<SessionManager>
+[DefaultExecutionOrder(-3)]
+public class SessionManager : SingletonPersistent<SessionManager>
 {
-    private StackExtention<SessionData> privateSessionData = new StackExtention<SessionData>();
-
-    [SerializeField] private int MaxSession = 10;
+    [SerializeField] private SessionDataSOBluePrint privateSessionData;
     public delegate void SessionDataChangeDelegate();
     public event SessionDataChangeDelegate OnSessionDataEmpty;
     public event SessionDataChangeDelegate OnEntryFirstSessionData;
+
+    public delegate void LoadOldSession(SessionDataSOBluePrint sessionDataChangeDelegate);
+    public event LoadOldSession OnLoadOldSession;
 
     public SessionData sessionData
     {
         get
         {
-            if (privateSessionData.Count > 0)
+            if (privateSessionData.Value.Count > 0)
             {
-                SessionData data = privateSessionData.Pop();
-                if (privateSessionData.Count == 0)
+                SessionData data = privateSessionData.Value.Pop();
+                if (privateSessionData.Value.Count == 0)
                     OnSessionDataEmpty?.Invoke();
                 return data;
             }
@@ -37,21 +39,26 @@ public class SessionManager : Singleton<SessionManager>
         }
     }
 
+    public void DoLoadOldSession()
+    {
+        Debug.Log(Application.persistentDataPath);
+        privateSessionData = (SessionDataSOBluePrint)FileHandler.LoadData("GameState", privateSessionData);
+        OnLoadOldSession?.Invoke(privateSessionData);
+    }
+
     public void SetSessionData(EItemChangeType changeType = EItemChangeType.Movement)
     {
-        Transform currentObject = GameManager.Instance._currentSelectedItem.Value.transform;
+        GameObject currentObject = GameManager.Instance._currentSelectedItem.Value.gameObject;
         if (currentObject == null)
             return;
-        if (privateSessionData == null)
-            privateSessionData = new StackExtention<SessionData>();
-        if (privateSessionData.Count == 0)
+        if (privateSessionData.Value == null)
+            privateSessionData.Value = new StackExtention<SessionData>();
+        if (privateSessionData.Value.Count == 0)
             OnEntryFirstSessionData?.Invoke();
-        SessionData newData = new SessionData(currentObject, currentObject.position, currentObject.localScale, changeType);
-        if(privateSessionData.Count> MaxSession)
-        {
-            privateSessionData.Remove(privateSessionData.Count - 1);
-        }
-        privateSessionData.Push(newData);
+        SessionData newData = new SessionData(currentObject, currentObject.transform.position, currentObject.transform.localScale, changeType);
+        privateSessionData.Value.Push(newData);
+        FileHandler.SaveData("GameState", privateSessionData);
+        
     }
 
 }
@@ -60,12 +67,12 @@ public class SessionManager : Singleton<SessionManager>
 [Serializable]
 public class SessionData
 {
-    public Transform item;
+    public GameObject item;
     public Vector3 itemPosition;
     public Vector3 itemScale;
     public EItemChangeType itemChangeType;
 
-    public SessionData(Transform item, Vector3 itemPosition, Vector3 itemScale, EItemChangeType changeType)
+    public SessionData(GameObject item, Vector3 itemPosition, Vector3 itemScale, EItemChangeType changeType)
     {
         this.item = item;
         this.itemPosition = itemPosition;

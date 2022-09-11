@@ -49,12 +49,12 @@ public class TouchController : MonoBehaviour
         AssignTouchVariables(currentTouch, touchIndex);
         thisPlane.SetNormalAndPosition(transform.up, transform.position);
         primaryTouchDelta = Vector3.zero;
-        if (GameManager.Instance._clickStateProp != EClickState.Default 
-            || GameManager.Instance._clickStateProp != EClickState.ItemClicked
+        if (GameManager.Instance._gameState != EGameState.Default 
+            || GameManager.Instance._gameState != EGameState.ItemClicked
             )
             return;
 
-        GameManager.Instance._clickStateProp = EClickState.MovingAround;
+        GameManager.Instance._gameState = EGameState.MovingAround;
         if(touchIndex == 0)
         {
             primaryTouchDelta = GetAreaDeltaPosition(primaryTouch);
