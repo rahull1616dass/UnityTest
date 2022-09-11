@@ -10,12 +10,13 @@ public class UIManager : SingletonPersistent<UIManager>
     [SerializeField] private Button m_AllItemButton;
     [SerializeField] private Button m_CloseItemPanel;
     [SerializeField] private Button m_UndoButton;
-    [SerializeField] private ItemEditorUIScript m_ItemUIEditor;
-    [SerializeField] private ItemScaleUIScript m_ItemUIScale;
-    [SerializeField] private ItemYAxisMove m_ItemYMovement;
-    [SerializeField] private ItemPanelScript m_ItemPanel;
+    [SerializeField] private ItemEditorUIScript m_ItemUIEditorInstance;
+    [SerializeField] private ItemScaleUIScript m_ItemUIScaleInstance;
+    [SerializeField] private ItemYAxisMove m_ItemYMovementInstance;
+    [SerializeField] private ItemPanelScript m_ItemPanelInstance;
+    [SerializeField] private ItemDeleteButtonScript m_DeleteButtonScriptInstance;
 
-    public delegate void DefaultButtonEvent();
+    public delegate void DefaultButtonDelegate();
 
     public delegate void DragXZPlaneDelegate(Vector2 prevFramePos,Vector2 delta);
 
@@ -30,9 +31,11 @@ public class UIManager : SingletonPersistent<UIManager>
     public event ScaleAndYMovementDelegate OnScale;
     public event ScaleAndYMovementDelegate OnYMovement;
 
-    public event DefaultButtonEvent OnViewAllItem;
-    public event DefaultButtonEvent OnCloseItemPanel;
-    public event DefaultButtonEvent OnClickUndo;
+    public event DefaultButtonDelegate OnViewAllItem;
+    public event DefaultButtonDelegate OnCloseItemPanel;
+    public event DefaultButtonDelegate OnClickUndo;
+    public event DefaultButtonDelegate OnDeleteItem;
+
 
     private void Start()
     {
@@ -43,10 +46,11 @@ public class UIManager : SingletonPersistent<UIManager>
 
     private void OnEnable()
     {
-        m_ItemUIEditor.OnDragItem += ItemUIEditor_OnDragItem;
-        m_ItemUIScale.OnScale += ItemUIScale_OnScale;
-        m_ItemYMovement.OnYMovement += ItemYMovement_OnYMovement;
-        m_ItemPanel.OnResetItem += OnItemReset;
+        m_ItemUIEditorInstance.OnDragItem += ItemUIEditor_OnDragItem;
+        m_ItemUIScaleInstance.OnScale += ItemUIScale_OnScale;
+        m_ItemYMovementInstance.OnYMovement += ItemYMovement_OnYMovement;
+        m_ItemPanelInstance.OnResetItem += OnItemReset;
+        m_DeleteButtonScriptInstance.OnDelete += OnItemDelete;
 
         SessionManager.Instance.OnEntryFirstSessionData += OnFirstMove;
         SessionManager.Instance.OnSessionDataEmpty += OnLastReset;
@@ -54,13 +58,19 @@ public class UIManager : SingletonPersistent<UIManager>
 
     private void OnDisable()
     {
-        m_ItemUIEditor.OnDragItem -= ItemUIEditor_OnDragItem;
-        m_ItemUIScale.OnScale -= ItemUIScale_OnScale;
-        m_ItemYMovement.OnYMovement -= ItemYMovement_OnYMovement;
-        m_ItemPanel.OnResetItem -= OnItemReset;
+        m_ItemUIEditorInstance.OnDragItem -= ItemUIEditor_OnDragItem;
+        m_ItemUIScaleInstance.OnScale -= ItemUIScale_OnScale;
+        m_ItemYMovementInstance.OnYMovement -= ItemYMovement_OnYMovement;
+        m_ItemPanelInstance.OnResetItem -= OnItemReset;
+        m_DeleteButtonScriptInstance.OnDelete -= OnItemDelete;
 
         SessionManager.Instance.OnEntryFirstSessionData -= OnFirstMove;
         SessionManager.Instance.OnSessionDataEmpty -= OnLastReset;
+    }
+
+    private void OnItemDelete()
+    {
+        OnDeleteItem?.Invoke();
     }
 
     private void OnLastReset()

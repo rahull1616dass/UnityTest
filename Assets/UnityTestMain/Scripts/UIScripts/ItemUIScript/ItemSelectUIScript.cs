@@ -22,6 +22,7 @@ public class ItemSelectUIScript : MonoBehaviour
         UIManager.Instance.OnScale += OnScaleOrYChange;
         UIManager.Instance.OnYMovement += OnScaleOrYChange;
         InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
+        UIManager.Instance.OnDeleteItem += OnDeleteItem;
     }
 
     private void OnDisable()
@@ -31,6 +32,12 @@ public class ItemSelectUIScript : MonoBehaviour
         UIManager.Instance.OnScale -= OnScaleOrYChange;
         UIManager.Instance.OnYMovement -= OnScaleOrYChange;
         InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
+        UIManager.Instance.OnDeleteItem -= OnDeleteItem;
+    }
+
+    private void OnDeleteItem()
+    {
+        m_ItemEditorUI.EnableOrDisableTheItemEditor(false);
     }
 
     private void OnScaleOrYChange(float scaleVal)
@@ -62,6 +69,7 @@ public class ItemSelectUIScript : MonoBehaviour
         {
             m_ItemEditorUI.EnableOrDisableTheItemEditor(true);
             m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, newValue.gameObject));
+
         }
     }
 

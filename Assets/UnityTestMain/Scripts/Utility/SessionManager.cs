@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum EItemChangeType
+{
+    None = -1,
+    Movement,
+    Delete
+}
 
 [DefaultExecutionOrder(-2)]
 public class SessionManager : Singleton<SessionManager>
@@ -31,7 +37,7 @@ public class SessionManager : Singleton<SessionManager>
         }
     }
 
-    public void SetSessionData()
+    public void SetSessionData(EItemChangeType changeType = EItemChangeType.Movement)
     {
         Transform currentObject = GameManager.Instance._currentSelectedItem.Value.transform;
         if (currentObject == null)
@@ -40,7 +46,7 @@ public class SessionManager : Singleton<SessionManager>
             privateSessionData = new StackExtention<SessionData>();
         if (privateSessionData.Count == 0)
             OnEntryFirstSessionData?.Invoke();
-        SessionData newData = new SessionData(currentObject, currentObject.position, currentObject.localScale);
+        SessionData newData = new SessionData(currentObject, currentObject.position, currentObject.localScale, changeType);
         if(privateSessionData.Count> MaxSession)
         {
             privateSessionData.Remove(privateSessionData.Count - 1);
@@ -57,11 +63,13 @@ public class SessionData
     public Transform item;
     public Vector3 itemPosition;
     public Vector3 itemScale;
+    public EItemChangeType itemChangeType;
 
-    public SessionData(Transform item, Vector3 itemPosition, Vector3 itemScale)
+    public SessionData(Transform item, Vector3 itemPosition, Vector3 itemScale, EItemChangeType changeType)
     {
         this.item = item;
         this.itemPosition = itemPosition;
         this.itemScale = itemScale;
+        this.itemChangeType = changeType;
     }
 }

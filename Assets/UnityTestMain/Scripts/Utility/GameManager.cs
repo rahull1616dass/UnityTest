@@ -10,7 +10,8 @@ public enum EClickState
     ItemClicked,
     ItemUIClicked,
     ItemUIScale,
-    ItemYMovement
+    ItemYMovement,
+    ItemDelete
 }
 
 [DefaultExecutionOrder(-2)]
