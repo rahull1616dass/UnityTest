@@ -9,6 +9,7 @@ public class AllItemInSceneController : MonoBehaviour
 {
     private Transform thisTransform;
     private ItemController currentItemController;
+    [SerializeField] private ItemsSOBluePrint allItems;
 
     private void Start()
     {
@@ -38,17 +39,30 @@ public class AllItemInSceneController : MonoBehaviour
         SessionManager.Instance.OnLoadOldSession -= OnLoadOldSession;
     }
 
-    private void OnLoadOldSession(SessionDataSOBluePrint datas)
+    private void OnLoadOldSession(SerializedSessionDataList datas)
     {
-        if (datas.Value == null)
+        if (datas == null)
             return;
-        int TotalData = datas.Value.Count;
-        for (int i = 0; i < TotalData; i++)
-        {
-            SessionData data = datas.Value.Pop();
-            GameObject obj = Instantiate(data.item, thisTransform);
-            obj.transform.position = data.itemPosition;
-            obj.transform.localScale = data.itemScale;
+
+        List<int> idOfTheObjects = new List<int>();
+        datas.allDataList.Reverse();
+
+        foreach (SerializedSessionData data in datas.allDataList)
+        { 
+            if (idOfTheObjects.Contains(data.id))
+                continue;
+            idOfTheObjects.Add(data.id);
+            if (data.itemChangeType == EItemChangeType.Delete)
+                continue;
+            foreach (GameItems staticItemData in allItems.StaticValue)
+            {
+                if (staticItemData.itemPrefab.tag == data.itemTag)
+                {
+                    GameObject itemObj = Instantiate(staticItemData.itemPrefab, thisTransform);
+                    itemObj.transform.position = new Vector3(data.itemPosition[0], data.itemPosition[1], data.itemPosition[2]);
+                    itemObj.transform.localScale = new Vector3(data.itemScale, data.itemScale, data.itemScale);
+                }
+            }
         }
     }
     private void OnDeleteItem()

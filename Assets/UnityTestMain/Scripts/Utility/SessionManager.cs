@@ -20,8 +20,16 @@ public class SessionManager : SingletonPersistent<SessionManager>
     public event SessionDataChangeDelegate OnSessionDataEmpty;
     public event SessionDataChangeDelegate OnEntryFirstSessionData;
 
-    public delegate void LoadOldSession(SessionDataSOBluePrint sessionDataChangeDelegate);
+    public delegate void LoadOldSession(SerializedSessionDataList previousSessionDataList);
     public event LoadOldSession OnLoadOldSession;
+
+    private SerializedSessionDataList allSessionDataListToSave;
+
+    public override void Awake()
+    {
+        base.Awake();
+        allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
+    }
 
     public SessionData sessionData
     {
@@ -42,8 +50,7 @@ public class SessionManager : SingletonPersistent<SessionManager>
     public void DoLoadOldSession()
     {
         Debug.Log(Application.persistentDataPath);
-        privateSessionData = (SessionDataSOBluePrint)FileHandler.LoadData("GameState", privateSessionData);
-        OnLoadOldSession?.Invoke(privateSessionData);
+        OnLoadOldSession?.Invoke((SerializedSessionDataList)FileHandler.LoadData("GameState", allSessionDataListToSave));
     }
 
     public void SetSessionData(EItemChangeType changeType = EItemChangeType.Movement)
@@ -57,12 +64,50 @@ public class SessionManager : SingletonPersistent<SessionManager>
             OnEntryFirstSessionData?.Invoke();
         SessionData newData = new SessionData(currentObject, currentObject.transform.position, currentObject.transform.localScale, changeType);
         privateSessionData.Value.Push(newData);
-        FileHandler.SaveData("GameState", privateSessionData);
-        
+        SaveSessionDataToLocal(newData);
+    }
+
+    private void SaveSessionDataToLocal(SessionData newData)
+    {
+        SerializedSessionData localData = new SerializedSessionData(newData.item.GetInstanceID(), newData.item.tag, newData.itemPosition, newData.itemScale, newData.itemChangeType);
+        allSessionDataListToSave.allDataList.Add(localData);
+        FileHandler.SaveData("GameState", allSessionDataListToSave);
     }
 
 }
 
+[Serializable]
+public class SerializedSessionDataList
+{
+    public List<SerializedSessionData> allDataList;
+
+    public SerializedSessionDataList(List<SerializedSessionData> allSessionList)
+    {
+        this.allDataList = allSessionList;
+    }
+}
+
+[Serializable]
+public class SerializedSessionData
+{
+    public int id;
+    public string itemTag;
+    public float[] itemPosition;
+    public float itemScale;
+    public EItemChangeType itemChangeType;
+
+    public SerializedSessionData(int id, string itemTag, Vector3 itemPosition, Vector3 itemScale, EItemChangeType changeType)
+    {
+        this.id = id;
+        this.itemTag = itemTag;
+        this.itemPosition = new float[3];
+        this.itemPosition[0] = itemPosition.x;
+        this.itemPosition[1] = itemPosition.y;
+        this.itemPosition[2] = itemPosition.z;
+        this.itemScale = itemScale.x;
+        this.itemChangeType = changeType;
+    }
+}
 
 [Serializable]
 public class SessionData

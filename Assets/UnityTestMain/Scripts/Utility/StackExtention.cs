@@ -32,4 +32,15 @@ public class StackExtention<T>
     {
         items.RemoveAt(itemAtPosition);
     }
+
+    public StackExtention<T> ListToStack(List<T> list)
+    {
+        items = list;
+        return this;
+    }
+
+    public List<T> StackToList()
+    {
+        return items;
+    }
 }
