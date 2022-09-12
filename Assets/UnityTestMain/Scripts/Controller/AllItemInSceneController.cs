@@ -14,7 +14,7 @@ public class AllItemInSceneController : MonoBehaviour
     private void Start()
     {
         thisTransform = transform;
-        GameManager.Instance._sessionManagerInstance.DoLoadOldSession();
+        GameManager.Instance._sessionhandlerInstance.DoLoadOldSession();
     }
 
     private void OnEnable()
@@ -25,7 +25,7 @@ public class AllItemInSceneController : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnResetItem += OnResetItem;
         GameManager.Instance._uiManagerInstance.OnDeleteItem += OnDeleteItem;
         GameManager.Instance.OnGameStateChange += OnClickStateChange;
-        GameManager.Instance._sessionManagerInstance.OnLoadOldSession += OnLoadOldSession;
+        GameManager.Instance._sessionhandlerInstance.OnLoadOldSession += OnLoadOldSession;
     }
 
     private void OnDisable()
@@ -36,7 +36,7 @@ public class AllItemInSceneController : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnResetItem -= OnResetItem;
         GameManager.Instance._uiManagerInstance.OnDeleteItem -= OnDeleteItem;
         GameManager.Instance.OnGameStateChange -= OnClickStateChange;
-        GameManager.Instance._sessionManagerInstance.OnLoadOldSession -= OnLoadOldSession;
+        GameManager.Instance._sessionhandlerInstance.OnLoadOldSession -= OnLoadOldSession;
     }
 
     private void OnLoadOldSession(SerializedSessionDataList datas, Action<List<GameObject>> callBackAction)
@@ -86,7 +86,7 @@ public class AllItemInSceneController : MonoBehaviour
         {
             if (oldState == EGameState.ItemClicked || GameManager.Instance._currentSelectedItem.Value == null)
                 return;
-            GameManager.Instance._sessionManagerInstance.SaveSessionDataToLocal(GameManager.Instance._currentSelectedItem.Value.gameObject, ConvertGameStateToChangetype(oldState));
+            GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(GameManager.Instance._currentSelectedItem.Value.gameObject, ConvertGameStateToChangetype(oldState));
         }
         
 
@@ -98,12 +98,10 @@ public class AllItemInSceneController : MonoBehaviour
            newState == EGameState.ItemClicked
            || GameManager.Instance._currentSelectedItem.Value == null)
             return;
-        Debug.Log("Adding");
-        GameManager.Instance._sessionManagerInstance.SetSessionData(ConvertGameStateToChangetype(newState));
+        GameManager.Instance._sessionhandlerInstance.SetSessionData(ConvertGameStateToChangetype(newState));
     }
     private void OnResetItem(SessionData data)
     {
-        Debug.Log("Removing");
         GameObject itemToReset = data.item;
         if (data.itemChangeType == EItemChangeType.Delete)
             itemToReset.gameObject.SetActive(true);
@@ -115,6 +113,9 @@ public class AllItemInSceneController : MonoBehaviour
         }
         itemToReset.transform.position = data.itemPosition;
         itemToReset.transform.localScale = data.itemScale;
+
+
+        GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(itemToReset, data.itemChangeType);
     }
 
     private void OnYMovement(float deltaValueForY)

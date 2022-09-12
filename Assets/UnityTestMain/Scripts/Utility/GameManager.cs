@@ -20,7 +20,7 @@ public class GameManager : SingletonPersistent<GameManager>
     private EGameState gameState = EGameState.Default;
     public CurrentSelectedItemBluePrint _currentSelectedItem;
 
-    public SessionHandler _sessionManagerInstance;
+    public SessionHandler _sessionhandlerInstance;
     public UIManager _uiManagerInstance;
 
     public EGameState _gameState

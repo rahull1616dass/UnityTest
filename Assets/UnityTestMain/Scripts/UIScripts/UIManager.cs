@@ -51,8 +51,8 @@ public class UIManager : MonoBehaviour
         m_ItemPanelInstance.OnResetItem += OnItemReset;
         m_DeleteButtonScriptInstance.OnDelete += OnItemDelete;
 
-        GameManager.Instance._sessionManagerInstance.OnEntryFirstSessionData += OnFirstMove;
-        GameManager.Instance._sessionManagerInstance.OnSessionDataEmpty += OnLastReset;
+        GameManager.Instance._sessionhandlerInstance.OnEntryFirstSessionData += OnFirstMove;
+        GameManager.Instance._sessionhandlerInstance.OnSessionDataEmpty += OnLastReset;
     }
 
     private void OnDisable()
@@ -63,8 +63,8 @@ public class UIManager : MonoBehaviour
         m_ItemPanelInstance.OnResetItem -= OnItemReset;
         m_DeleteButtonScriptInstance.OnDelete -= OnItemDelete;
 
-        GameManager.Instance._sessionManagerInstance.OnEntryFirstSessionData -= OnFirstMove;
-        GameManager.Instance._sessionManagerInstance.OnSessionDataEmpty -= OnLastReset;
+        GameManager.Instance._sessionhandlerInstance.OnEntryFirstSessionData -= OnFirstMove;
+        GameManager.Instance._sessionhandlerInstance.OnSessionDataEmpty -= OnLastReset;
     }
 
     private void OnItemDelete()

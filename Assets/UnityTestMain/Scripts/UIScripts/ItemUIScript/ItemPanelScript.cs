@@ -26,7 +26,7 @@ public class ItemPanelScript : MonoBehaviour
 
     private void OnClickUndo()
     {
-        SessionData dataToReset = GameManager.Instance._sessionManagerInstance.sessionData;
+        SessionData dataToReset = GameManager.Instance._sessionhandlerInstance.sessionData;
         if (dataToReset != null)
         {
             OnResetItem?.Invoke(dataToReset);
