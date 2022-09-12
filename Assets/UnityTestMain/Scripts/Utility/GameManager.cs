@@ -22,6 +22,7 @@ public class GameManager : SingletonPersistent<GameManager>
 
     public SessionHandler _sessionhandlerInstance;
     public UIManager _uiManagerInstance;
+    public TouchController _touchControllerInstance;
 
     public EGameState _gameState
     {

@@ -23,6 +23,7 @@ public class ItemSelectUIScript : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnYMovement += OnScaleOrYChange;
         InputManager.Instance.OnEndTouch += OnEndTouchFromScreen;
         GameManager.Instance._uiManagerInstance.OnDeleteItem += OnDeleteItem;
+        GameManager.Instance._touchControllerInstance.OnMoveCam += OnCamMove;
     }
 
     private void OnDisable()
@@ -33,6 +34,13 @@ public class ItemSelectUIScript : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnYMovement -= OnScaleOrYChange;
         InputManager.Instance.OnEndTouch -= OnEndTouchFromScreen;
         GameManager.Instance._uiManagerInstance.OnDeleteItem -= OnDeleteItem;
+        GameManager.Instance._touchControllerInstance.OnMoveCam -= OnCamMove;
+    }
+
+    private void OnCamMove()
+    {
+        if (GameManager.Instance._currentSelectedItem.Value != null && m_ItemEditorUI._thisGameObject.activeSelf)
+            m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, GameManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
     private void OnDeleteItem()

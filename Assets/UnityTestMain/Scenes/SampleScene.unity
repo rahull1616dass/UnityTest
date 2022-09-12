@@ -585,6 +585,7 @@ MonoBehaviour:
   _currentSelectedItem: {fileID: 11400000, guid: 32f509b39996209498299eeaa8821bd0, type: 2}
   _sessionhandlerInstance: {fileID: 1848346405}
   _uiManagerInstance: {fileID: 1098167871}
+  _touchControllerInstance: {fileID: 2111693964}
 --- !u!4 &559172494
 Transform:
   m_ObjectHideFlags: 0

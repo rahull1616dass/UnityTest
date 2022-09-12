@@ -16,6 +16,9 @@ public class TouchController : MonoBehaviour
     private Vector2 primaryTouchPrevPosition, secondaryTouchPrevPosition;
     private AdvancedTouch.Touch primaryTouch, secondaryTouch;
 
+    public delegate void MoveCameraDelegate();
+    public MoveCameraDelegate OnMoveCam;
+
     private void Awake()
     {
         inputManager = InputManager.Instance;
@@ -84,6 +87,7 @@ public class TouchController : MonoBehaviour
             }
         }
         AssignVectors(currentTouch, touchIndex);
+        OnMoveCam?.Invoke();
     }
 
     private void InputManager_OnEndTouch(AdvancedTouch.Touch currentTouch, int touchIndex)

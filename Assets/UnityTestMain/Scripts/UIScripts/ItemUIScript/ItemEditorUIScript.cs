@@ -18,10 +18,20 @@ public class ItemEditorUIScript : MonoBehaviour
 
     public event DragXZPlaneDelegate OnDragItem;
 
-    private Vector2 prevFrameDragPos;
+
+    private GameObject thisObject;
+
+    public GameObject _thisGameObject
+    {
+        get
+        {
+            return thisObject;
+        }
+    }
 
     private void Start()
     {
+        thisObject = gameObject;
         CreateAndAddTrigger();
     }
 
@@ -44,8 +54,6 @@ public class ItemEditorUIScript : MonoBehaviour
     private void OnPointerDownToEditor(BaseEventData eventData)
     {
         GameManager.Instance._gameState = EGameState.ItemUIClicked;
-        PointerEventData data = (PointerEventData)eventData;
-        prevFrameDragPos = data.position;
     }
 
     private void DragHandler(BaseEventData eventData)
@@ -55,7 +63,6 @@ public class ItemEditorUIScript : MonoBehaviour
         m_AreaOfEditor.anchoredPosition = CanvasPositioningExtensions.ScreenToCanvasPosition(m_CurrentCanvas, data.position);
 
         OnDragItem?.Invoke(data.delta);
-        prevFrameDragPos = data.position;
     }
 
     public void EnableOrDisableTheItemEditor(bool state)
