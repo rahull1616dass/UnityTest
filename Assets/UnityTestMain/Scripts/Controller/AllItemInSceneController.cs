@@ -107,6 +107,7 @@ public class AllItemInSceneController : MonoBehaviour
             itemToReset.gameObject.SetActive(true);
         else if (data.itemChangeType == EItemChangeType.Create)
         {
+            GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(itemToReset, EItemChangeType.Delete);
             Destroy(itemToReset);
             GameManager.Instance._currentSelectedItem.Value = null;
             return;
@@ -115,7 +116,8 @@ public class AllItemInSceneController : MonoBehaviour
         itemToReset.transform.localScale = data.itemScale;
 
 
-        GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(itemToReset, data.itemChangeType);
+        GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(itemToReset, data.itemChangeType == EItemChangeType.Delete ? EItemChangeType.Create : 
+                                                                                         data.itemChangeType);
     }
 
     private void OnYMovement(float deltaValueForY)
