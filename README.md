@@ -4,7 +4,7 @@ Hi! This project is requested by **Struckd** to demonstrate my skills in unity, 
 
 
 ## How to use
-![UIImage](https://user-images.githubusercontent.com/25811368/189644637-6efceaf3-3ac9-424b-823c-3e5e21cbe86e.PNG)
+![UIImage](https://user-images.githubusercontent.com/25811368/189669337-a8dc2460-6019-4fdd-a6c8-d16fbdc725d9.png)
 
 I tried to recreate the **Struckd's** Application and by the same way user can
  - Move their camera by using one finger.
@@ -13,7 +13,8 @@ I tried to recreate the **Struckd's** Application and by the same way user can
  - The up-down button to change the Y axis of the selected object
  - The top right corner image is used to scale up and down the item
  - The delete button on the bottom of the editor UI to delete the selected object.
- - And on the top left corner the Undo button to undo the changes in current session
+ - On the top left corner the Undo button to undo the changes in current session
+ - And on the bottom left corner the AllAssetsRemove button is there to remove all the assets
 
 ## Working Approach
 The main 5 Managers classes here are 
