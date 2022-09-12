@@ -11,7 +11,9 @@ public enum EItemChangeType
     Delete,
     Create
 }
-
+/// <summary>
+/// This Class is mainly used to handle session
+/// </summary>
 public class SessionHandler : MonoBehaviour
 {
     [SerializeField] private SessionDataSOBluePrint privateSessionData;
@@ -40,7 +42,9 @@ public class SessionHandler : MonoBehaviour
                 return null;
         }
     }
-
+    /// <summary>
+    /// Load previous session
+    /// </summary>
     public void DoLoadOldSession()
     {
         allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
@@ -78,6 +82,11 @@ public class SessionHandler : MonoBehaviour
 
 }
 
+
+/// <summary>
+/// Had to create this class, because without serialized class, the data is not saving properly. means data is not saving with simple List<T>
+/// </summary>
+
 [Serializable]
 public class SerializedSessionDataList
 {
@@ -88,6 +97,10 @@ public class SerializedSessionDataList
         this.allDataList = allSessionList;
     }
 }
+
+/// <summary>
+/// Because we cannot save Unity's class data e.g. GameObject or Vector3 into file so used this serialized class for this
+/// </summary>
 
 [Serializable]
 public class SerializedSessionData
@@ -110,7 +123,9 @@ public class SerializedSessionData
         this.itemChangeType = changeType;
     }
 }
-
+/// <summary>
+/// This Class is used to store current session data into SessionDataSO scriptable object
+/// </summary>
 [Serializable]
 public class SessionData
 {

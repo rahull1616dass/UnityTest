@@ -4,11 +4,6 @@ using UnityEngine;
 /// Small helper class to convert viewport, screen or world positions to canvas space.
 /// Only works with screen space canvases.
 /// </summary>
-/// <example>
-/// <code>
-/// objectOnCanvasRectTransform.anchoredPosition = specificCanvas.WorldToCanvasPoint(worldspaceTransform.position);
-/// </code>
-/// </example>
 public static class CanvasPositioningExtensions
 {
     public static Vector3 WorldToCanvasPosition(this Canvas canvas, Vector3 worldPosition, Camera camera = null)

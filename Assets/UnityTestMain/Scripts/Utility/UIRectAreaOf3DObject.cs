@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class UIRectAreaOf3DObject 
 {
+    /// <summary>
+    /// Gives the screen position rect of a 3D Object by reading the camera reanding data
+    /// </summary>
     public static Rect CovertObjectToRect(Camera cam, GameObject ObjectIn3DSpace)
     {
         var renderer = ObjectIn3DSpace.GetComponentInChildren<Renderer>();

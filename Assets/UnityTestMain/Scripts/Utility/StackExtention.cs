@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 
+
+/// <summary>
+/// This stack class is used as same way with one extra method called 'Remove' by which an Item can be removed from anywhere in stack
+/// </summary>
 public class StackExtention<T>
 {
     private List<T> items = new List<T>();
@@ -17,6 +21,11 @@ public class StackExtention<T>
     {
         items.Add(item);
     }
+
+    /// <summary>
+    /// Get the last entered val
+    /// </summary>
+
     public T Pop()
     {
         if (items.Count > 0)
@@ -28,6 +37,9 @@ public class StackExtention<T>
         else
             return default(T);
     }
+    /// <summary>
+    /// Remove the item with the position of the item
+    /// </summary>
     public void Remove(int itemAtPosition)
     {
         items.RemoveAt(itemAtPosition);

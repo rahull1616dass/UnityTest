@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UIManager is the main class that comes if anyone wants to communicate from UI element to other space
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Button m_AllItemButton;

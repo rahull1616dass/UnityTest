@@ -5,7 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
-
+/// <summary>
+/// This used to control transform related data
+/// </summary>
 public class ItemController : MonoBehaviour
 {
     [SerializeField] private CurrentSelectedItemBluePrint m_CurrentSelectedItem;

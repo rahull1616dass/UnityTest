@@ -6,7 +6,9 @@ using UnityEngine.UIElements;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
-
+/// <summary>
+/// This class is mainly handling camera movement
+/// </summary>
 public class TouchController : MonoBehaviour
 {
     [SerializeField] private Camera m_MainCam;
@@ -39,14 +41,18 @@ public class TouchController : MonoBehaviour
         inputManager.OnEndTouch -= InputManager_OnEndTouch;
         inputManager.OnTouchMove -= InputManager_OnTouchMove;
     }
-
+    /// <summary>
+    /// Storing the initials before touch
+    /// </summary>
     private void InputManager_OnBeginTouch(AdvancedTouch.Touch currentTouch, int touchIndex)
     {
         AssignTouchVariables(currentTouch, touchIndex);
         thisPlane.SetNormalAndPosition(transform.up, transform.position);
         AssignVectors(currentTouch, touchIndex);
     }
-
+    /// <summary>
+    /// Do Cam movement, zoom and rotation 
+    /// </summary>
     private void InputManager_OnTouchMove(AdvancedTouch.Touch currentTouch, int touchIndex)
     {
         AssignTouchVariables(currentTouch, touchIndex);
@@ -89,6 +95,10 @@ public class TouchController : MonoBehaviour
         AssignVectors(currentTouch, touchIndex);
         OnMoveCam?.Invoke();
     }
+
+    /// <summary>
+    /// Reset few data 
+    /// </summary>
 
     private void InputManager_OnEndTouch(AdvancedTouch.Touch currentTouch, int touchIndex)
     {

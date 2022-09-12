@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This Class reads the allItems Scriptable object and create the UI which can be used to create Item in scene
+/// </summary>
 public class ItemCreateScript : MonoBehaviour
 {
     [SerializeField] private ItemsSOBluePrint m_allItemSO;

@@ -2,6 +2,11 @@ using UnityEngine;
 using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 [DefaultExecutionOrder(-1)]
+
+
+/// <summary>
+/// This is taking the Unity's Touch input and creating the events
+/// </summary>
 public class InputManager : Singleton<InputManager>
 {
 

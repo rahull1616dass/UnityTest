@@ -5,6 +5,11 @@ using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// If we put the event call on the ItemController class then all of the object will fire though it is not selected, 
+/// So we use this class as a manager of ItemController Class
+/// </summary>
+
 public class AllItemInSceneController : MonoBehaviour
 {
     private Transform thisTransform;

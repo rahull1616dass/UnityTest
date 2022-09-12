@@ -1,5 +1,9 @@
 using UnityEngine;
 
+
+/// <summary>
+/// Use this if the Class do not need any serializedField
+/// </summary>
 public class Singleton<T> : MonoBehaviour
     where T : Component
 {
@@ -29,6 +33,9 @@ public class Singleton<T> : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Use this if the Class need any serializedField
+/// </summary>
 public class SingletonPersistent<T> : MonoBehaviour
     where T : Component
 {
