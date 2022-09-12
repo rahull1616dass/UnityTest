@@ -1,6 +1,6 @@
 # Test Assignment
 
-Hi! This project is requested by **Struckd** to demonstrate my skills in unity, though I tried different coding skills here but I did not create different **namespace** and/or  different **AssemblyDefs** because this project is relatively small in size.
+Hi! This project is requested by **Struckd** to demonstrate my skills in unity, though I tried different coding skills here but I did not create different **namespace** and/or  different **AssemblyDefs** because this project is relatively small in size. The icons is being used from [UXWing](https://uxwing.com/) which is free to use without attribution.
 
 
 ## How to use
