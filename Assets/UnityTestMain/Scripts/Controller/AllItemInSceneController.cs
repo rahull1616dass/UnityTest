@@ -31,6 +31,7 @@ public class AllItemInSceneController : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnDeleteItem += OnDeleteItem;
         GameManager.Instance.OnGameStateChange += OnClickStateChange;
         GameManager.Instance._sessionhandlerInstance.OnLoadOldSession += OnLoadOldSession;
+        GameManager.Instance._uiManagerInstance.OnRemoveAllAsset += OnRemoveAllItems;
     }
 
     private void OnDisable()
@@ -42,6 +43,21 @@ public class AllItemInSceneController : MonoBehaviour
         GameManager.Instance._uiManagerInstance.OnDeleteItem -= OnDeleteItem;
         GameManager.Instance.OnGameStateChange -= OnClickStateChange;
         GameManager.Instance._sessionhandlerInstance.OnLoadOldSession -= OnLoadOldSession;
+        GameManager.Instance._uiManagerInstance.OnRemoveAllAsset -= OnRemoveAllItems;
+    }
+
+    private void OnRemoveAllItems()
+    {
+        int totalChildCount = thisTransform.childCount;
+        for (int i = 0; i < totalChildCount; i++)
+        {
+            GameObject Obj = thisTransform.GetChild(i).gameObject;
+            if (!Obj.activeSelf)
+                continue;
+            Obj.SetActive(false);
+            GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(Obj, EItemChangeType.DeleteAll);
+            GameManager.Instance._sessionhandlerInstance.SetSessionData(Obj, EItemChangeType.DeleteAll);
+        }
     }
 
     private void OnLoadOldSession(SerializedSessionDataList datas, Action<List<GameObject>> callBackAction)
@@ -58,7 +74,7 @@ public class AllItemInSceneController : MonoBehaviour
             if (idOfTheObjects.Contains(data.id))
                 continue;
             idOfTheObjects.Add(data.id);
-            if (data.itemChangeType == EItemChangeType.Delete)
+            if (data.itemChangeType == EItemChangeType.Delete|| data.itemChangeType == EItemChangeType.DeleteAll)
                 continue;
             foreach (GameItems staticItemData in allItems.StaticValue)
             {
@@ -93,8 +109,6 @@ public class AllItemInSceneController : MonoBehaviour
                 return;
             GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(GameManager.Instance._currentSelectedItem.Value.gameObject, ConvertGameStateToChangetype(oldState));
         }
-        
-
     }
 
     private void SaveSessionData(EGameState oldState, EGameState newState)
@@ -103,10 +117,31 @@ public class AllItemInSceneController : MonoBehaviour
            newState == EGameState.ItemClicked
            || GameManager.Instance._currentSelectedItem.Value == null)
             return;
-        GameManager.Instance._sessionhandlerInstance.SetSessionData(ConvertGameStateToChangetype(newState));
+        GameManager.Instance._sessionhandlerInstance.SetSessionData(GameManager.Instance._currentSelectedItem.Value.gameObject, ConvertGameStateToChangetype(newState));
     }
     private void OnResetItem(SessionData data)
     {
+        //Going through loop to retrive the all items that deleted
+        while (data.itemChangeType == EItemChangeType.DeleteAll)
+        {
+            if (data == null)
+                return;
+            
+            data.item.SetActive(true);
+            data.item.transform.position = data.itemPosition;
+            data.item.transform.localScale = data.itemScale;
+            GameManager.Instance._sessionhandlerInstance.SaveSessionDataToLocal(data.item, EItemChangeType.Create);
+
+            data = GameManager.Instance._sessionhandlerInstance.sessionData;
+
+            if (data.itemChangeType != EItemChangeType.DeleteAll)
+            {
+                //putting back which is poped
+                GameManager.Instance._sessionhandlerInstance.SetSessionData(data.item, data.itemPosition, data.itemScale, data.itemChangeType);
+                return;
+            }
+        }
+        //if not all item deleted before then just selecting one and working with it
         GameObject itemToReset = data.item;
         if (data.itemChangeType == EItemChangeType.Delete)
             itemToReset.gameObject.SetActive(true);

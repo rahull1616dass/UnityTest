@@ -11,12 +11,14 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private Button m_AllItemButton;
     [SerializeField] private Button m_CloseItemPanel;
-    [SerializeField] private Button m_UndoButton;
+    [SerializeField] private Button m_UndoButton; 
+    [SerializeField] private Button m_RemoveAllAssetButton;
     [SerializeField] private ItemEditorUIScript m_ItemUIEditorInstance;
     [SerializeField] private ItemScaleUIScript m_ItemUIScaleInstance;
     [SerializeField] private ItemYAxisMove m_ItemYMovementInstance;
     [SerializeField] private ItemPanelScript m_ItemPanelInstance;
     [SerializeField] private ItemDeleteButtonScript m_DeleteButtonScriptInstance;
+    
 
     public delegate void DefaultButtonDelegate();
 
@@ -37,13 +39,14 @@ public class UIManager : MonoBehaviour
     public event DefaultButtonDelegate OnCloseItemPanel;
     public event DefaultButtonDelegate OnClickUndo;
     public event DefaultButtonDelegate OnDeleteItem;
-
+    public event DefaultButtonDelegate OnRemoveAllAsset;
 
     private void Start()
     {
         m_AllItemButton.onClick.AddListener(() => { OnViewAllItem?.Invoke(); });
         m_CloseItemPanel.onClick.AddListener(() => { OnCloseItemPanel?.Invoke(); });
         m_UndoButton.onClick.AddListener(() => { OnClickUndo?.Invoke(); });
+        m_RemoveAllAssetButton.onClick.AddListener(() => { OnRemoveAllAsset?.Invoke(); });
     }
 
     private void OnEnable()

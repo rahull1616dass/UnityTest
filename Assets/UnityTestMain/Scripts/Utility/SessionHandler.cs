@@ -9,7 +9,8 @@ public enum EItemChangeType
     None = -1,
     Movement,
     Delete,
-    Create
+    Create,
+    DeleteAll
 }
 /// <summary>
 /// This Class is mainly used to handle session
@@ -58,9 +59,8 @@ public class SessionHandler : MonoBehaviour
             SaveSessionDataToLocal(gameObj, EItemChangeType.Create);
     }
 
-    public void SetSessionData(EItemChangeType changeType = EItemChangeType.Movement)
+    public void SetSessionData(GameObject currentObject, EItemChangeType changeType = EItemChangeType.Movement)
     {
-        GameObject currentObject = GameManager.Instance._currentSelectedItem.Value.gameObject;
         if (currentObject == null)
             return;
         if (privateSessionData.Value == null)
@@ -68,6 +68,20 @@ public class SessionHandler : MonoBehaviour
         if (privateSessionData.Value.Count == 0)
             OnEntryFirstSessionData?.Invoke();
         SessionData newData = new SessionData(currentObject, currentObject.transform.position, currentObject.transform.localScale, changeType);
+        privateSessionData.Value.Push(newData);
+    }
+
+
+    //Overloaded method to use different position and rotation storage than current
+    public void SetSessionData(GameObject obj, Vector3 position, Vector3 localScale, EItemChangeType changeType = EItemChangeType.Movement)
+    {
+        if (obj == null)
+            return;
+        if (privateSessionData.Value == null)
+            privateSessionData.Value = new StackExtention<SessionData>();
+        if (privateSessionData.Value.Count == 0)
+            OnEntryFirstSessionData?.Invoke();
+        SessionData newData = new SessionData(obj, position, localScale, changeType);
         privateSessionData.Value.Push(newData);
     }
 
