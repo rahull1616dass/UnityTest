@@ -43,3 +43,9 @@ There were many challenges faced while developing this application most 2 of the
  2. The Scriptable Objects **SessionDataSO** storing the current session data, **CurrentSelectedItem** storing the value of the current Item that is selected and **3DItemList** is storing the 3D Items that needs to place in scene.
  3. The **ItemEditorUIScript**, **ItemScaleUIScript**, **ItemYAxisMove** and **ItemDeleteButtonScript** is used to manipulate the selected item in the world and **ItemSelectUIScript** is used to manipulate the UI that is controlling the Object.
  4. The **ItemController** is used to do the transform changes on the item by **AllItemInSceneController** class.
+
+## Other Packages used
+
+ 1. **TMPro** for crystal clear text
+ 2. **InputSystem** for Unity's Enhanced Touch Input
+ 3. **Sprite Editor** to edit PNGs
