@@ -7,7 +7,6 @@ public enum EGameState
     None = -1,
     Default,
     ItemCreated,
-    MovingAround,
     ItemClicked,
     ItemUIClicked,
     ItemUIScale,

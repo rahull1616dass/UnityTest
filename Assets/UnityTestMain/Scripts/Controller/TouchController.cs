@@ -49,12 +49,13 @@ public class TouchController : MonoBehaviour
         AssignTouchVariables(currentTouch, touchIndex);
         thisPlane.SetNormalAndPosition(transform.up, transform.position);
         primaryTouchDelta = Vector3.zero;
+
+
         if (GameManager.Instance._gameState != EGameState.Default 
-            || GameManager.Instance._gameState != EGameState.ItemClicked
+            &&GameManager.Instance._gameState != EGameState.ItemClicked
             )
             return;
 
-        GameManager.Instance._gameState = EGameState.MovingAround;
         if(touchIndex == 0)
         {
             primaryTouchDelta = GetAreaDeltaPosition(primaryTouch);
@@ -70,7 +71,6 @@ public class TouchController : MonoBehaviour
 
             float zoom = Vector3.Distance(castPositionOfPrimaryTouchCurrFrame, castPositionOfSecondaryTouchCurrFrame)/
                             Vector3.Distance(castPositionOfPrimaryTouchPrevFrame, castPositionOfSecondaryTouchPrevFrame);
-            Debug.Log(zoom);
             if (zoom == 0 || zoom > 10)
                 return;
 

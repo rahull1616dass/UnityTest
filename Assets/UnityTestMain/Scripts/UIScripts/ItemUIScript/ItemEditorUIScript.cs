@@ -14,7 +14,7 @@ public class ItemEditorUIScript : MonoBehaviour
 
     private EventTrigger thisObjectClickEvent;
 
-    public delegate void DragXZPlaneDelegate(Vector2 oldPos, Vector2 newPos);
+    public delegate void DragXZPlaneDelegate(Vector2 delta);
 
     public event DragXZPlaneDelegate OnDragItem;
 
@@ -55,7 +55,7 @@ public class ItemEditorUIScript : MonoBehaviour
         
         m_AreaOfEditor.anchoredPosition = CanvasPositioningExtensions.ScreenToCanvasPosition(m_CurrentCanvas, data.position);
 
-        OnDragItem?.Invoke(prevFrameDragPos, data.position);
+        OnDragItem?.Invoke(data.delta);
         prevFrameDragPos = data.position;
     }
 

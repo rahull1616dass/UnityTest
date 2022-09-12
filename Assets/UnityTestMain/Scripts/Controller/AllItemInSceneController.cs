@@ -124,11 +124,11 @@ public class AllItemInSceneController : MonoBehaviour
             currentItemController.MoveInY(deltaValueForY);
     }
 
-    private void OnMoveInXZPlane(Vector2 prevFramePos, Vector2 newFramePos)
+    private void OnMoveInXZPlane(Vector2 delta)
     {
         currentItemController = GameManager.Instance._currentSelectedItem.Value;
         if (currentItemController != null)
-            currentItemController.MoveInXZ(prevFramePos, newFramePos);
+            currentItemController.MoveInXZ(delta);
     }
 
     private void OnScaleObject(float scaleVal)

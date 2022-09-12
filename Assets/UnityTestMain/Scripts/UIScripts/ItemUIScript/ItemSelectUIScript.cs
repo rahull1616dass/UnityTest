@@ -45,7 +45,7 @@ public class ItemSelectUIScript : MonoBehaviour
         m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, GameManager.Instance._currentSelectedItem.Value.gameObject));
     }
 
-    private void AreaChange(Vector2 prevFramePos, Vector2 delta)
+    private void AreaChange(Vector2 delta)
     {
         m_ItemEditorUI.PositionTheUIArea(UIRectAreaOf3DObject.CovertObjectToRect(mainCam, GameManager.Instance._currentSelectedItem.Value.gameObject));
     }

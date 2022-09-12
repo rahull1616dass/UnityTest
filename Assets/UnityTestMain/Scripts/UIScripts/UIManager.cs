@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
     public delegate void DefaultButtonDelegate();
 
-    public delegate void DragXZPlaneDelegate(Vector2 prevFramePos,Vector2 delta);
+    public delegate void DragXZPlaneDelegate(Vector2 delta);
 
     public event DragXZPlaneDelegate OnDragItem;
 
@@ -92,9 +92,9 @@ public class UIManager : MonoBehaviour
         OnYMovement?.Invoke(deltaValue);
     }
 
-    private void ItemUIEditor_OnDragItem(Vector2 prevFramePos, Vector2 newPos)
+    private void ItemUIEditor_OnDragItem(Vector2 delta)
     {
-        OnDragItem?.Invoke(prevFramePos, newPos);
+        OnDragItem?.Invoke(delta);
     }
 
     private void ItemUIScale_OnScale(float scaleVal)
