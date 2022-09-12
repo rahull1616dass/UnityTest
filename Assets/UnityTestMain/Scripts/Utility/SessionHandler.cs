@@ -24,10 +24,6 @@ public class SessionHandler : MonoBehaviour
 
     private SerializedSessionDataList allSessionDataListToSave;
 
-    private void Start()
-    {
-        allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
-    }
 
     public SessionData sessionData
     {
@@ -48,6 +44,7 @@ public class SessionHandler : MonoBehaviour
     public void DoLoadOldSession()
     {
         Debug.Log(Application.persistentDataPath);
+        allSessionDataListToSave = new SerializedSessionDataList(new List<SerializedSessionData>());
         OnLoadOldSession?.Invoke((SerializedSessionDataList)FileHandler.LoadData("GameState", allSessionDataListToSave), OnFinishedLoadingData);
     }
 

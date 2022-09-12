@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CurrentSelectedItem: {fileID: 11400000, guid: 32f509b39996209498299eeaa8821bd0, type: 2}
   minScale: 0.1
-  movementSpeed: 0.0009
+  movementSpeed: 0.001
 --- !u!136 &-602549826981919400
 CapsuleCollider:
   m_ObjectHideFlags: 0

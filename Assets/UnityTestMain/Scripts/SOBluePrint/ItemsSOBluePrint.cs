@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName ="Scriptable Objects/3D Item List")]
 public class ItemsSOBluePrint : SerializedValue<List<GameItems>>
-{   
+{
 }
 
 [System.Serializable]

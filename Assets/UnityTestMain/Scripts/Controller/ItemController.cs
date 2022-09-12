@@ -36,35 +36,54 @@ public class ItemController : MonoBehaviour
         float distanceFromCam = Vector3.Distance(mainCam.transform.position, transform.position);
         //Vector3 prevFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(prevFramePos.x, prevFramePos.y, distanceFromCam));
         //Vector3 newFrameOnWorld = mainCam.ScreenToWorldPoint(new Vector3(newFramePos.x, newFramePos.y, distanceFromCam));
-        delta = delta *movementSpeed*distanceFromCam;
-        float cameraAngle = mainCam.transform.localEulerAngles.y > 180 ? mainCam.transform.localEulerAngles.y - 360f : mainCam.transform.localEulerAngles.y;
-        float displacementRatio = cameraAngle / 90f;
-        float XDisplacement=0f;
-        float YDisplacement=0f;
-        Debug.Log(delta);
-        Debug.Log(displacementRatio);
-        if (-1f <= displacementRatio && displacementRatio <= 0f)
-        {
-            XDisplacement = delta.x * (1 - (-(displacementRatio))) + delta.y * ((displacementRatio));
-            YDisplacement = delta.y * (1 - (-(displacementRatio))) + delta.x * (-(displacementRatio));
-        }
-        else if (-2f < displacementRatio && displacementRatio < -1f)
-        {
-            XDisplacement = delta.x * (displacementRatio + 1) - delta.y * (displacementRatio + 2);
-            YDisplacement = delta.y * (1 - (-(displacementRatio))) + delta.x * (displacementRatio + 2);
-        }
-        else if (2f > displacementRatio && displacementRatio > 1f)
-        {
-            XDisplacement = delta.x * (1 - displacementRatio) + delta.y * (1 - (displacementRatio - 1));
-            YDisplacement = delta.y * (1 - displacementRatio) + delta.x * ((displacementRatio -1) - 1);
-        }
-        else if (1f >= displacementRatio && displacementRatio > 0f)
-        {
-            XDisplacement = delta.x * (1- displacementRatio) + delta.y * (1 - (1 - displacementRatio));
-            YDisplacement = delta.y * (1 - displacementRatio) + delta.x * ((1 - displacementRatio) - 1);
-        }
-        Vector3 newPos = new Vector3(thisTransform.position.x + XDisplacement, thisTransform.position.y, thisTransform.position.z + YDisplacement);
-        thisTransform.position = newPos;
+
+        Vector3 forwardDirection = mainCam.transform.forward * Mathf.Sin(40f * Mathf.PI / 180f);
+        Vector3 rightDirection = mainCam.transform.right;
+
+        forwardDirection.y = 0;
+        rightDirection.y = 0;
+
+        forwardDirection = forwardDirection.normalized;
+        rightDirection = rightDirection.normalized;
+
+
+        Vector3 relativeZDelta = delta.y * forwardDirection;
+        Vector3 relativeXDelta = delta.x * rightDirection;
+
+        Vector3 movementData = relativeXDelta + relativeZDelta;
+
+        movementData = movementData * movementSpeed * distanceFromCam;
+
+        thisTransform.Translate(movementData);
+        //delta = delta *movementSpeed*distanceFromCam;
+        //float cameraAngle = mainCam.transform.localEulerAngles.y > 180 ? mainCam.transform.localEulerAngles.y - 360f : mainCam.transform.localEulerAngles.y;
+        //float displacementRatio = cameraAngle / 90f;
+        //float XDisplacement=0f;
+        //float YDisplacement=0f;
+        //Debug.Log(delta);
+        //Debug.Log(displacementRatio);
+        //if (-1f <= displacementRatio && displacementRatio <= 0f)
+        //{
+        //    XDisplacement = delta.x * (1 - (-(displacementRatio))) + delta.y * ((displacementRatio));
+        //    YDisplacement = delta.y * (1 - (-(displacementRatio))) + delta.x * (-(displacementRatio));
+        //}
+        //else if (-2f < displacementRatio && displacementRatio < -1f)
+        //{
+        //    XDisplacement = delta.x * (displacementRatio + 1) - delta.y * (displacementRatio + 2);
+        //    YDisplacement = delta.y * (1 - (-(displacementRatio))) + delta.x * (displacementRatio + 2);
+        //}
+        //else if (2f > displacementRatio && displacementRatio > 1f)
+        //{
+        //    XDisplacement = delta.x * (1 - displacementRatio) + delta.y * (1 - (displacementRatio - 1));
+        //    YDisplacement = delta.y * (1 - displacementRatio) + delta.x * ((displacementRatio -1) - 1);
+        //}
+        //else if (1f >= displacementRatio && displacementRatio > 0f)
+        //{
+        //    XDisplacement = delta.x * (1- displacementRatio) + delta.y * (1 - (1 - displacementRatio));
+        //    YDisplacement = delta.y * (1 - displacementRatio) + delta.x * ((1 - displacementRatio) - 1);
+        //}
+        //Vector3 newPos = new Vector3(thisTransform.position.x + XDisplacement, thisTransform.position.y, thisTransform.position.z + YDisplacement);
+        //thisTransform.position = newPos;
     }
 
     public void Scale(float scaleVal)
