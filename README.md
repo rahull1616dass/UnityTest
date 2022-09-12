@@ -10,9 +10,10 @@ I tried to recreate the **Struckd's** Application and by the same way user can
  - Move their camera by using one finger.
  - Rotate and zoom by using two finger .
  - Move the object on X-Z by dragging the UIEditor of the object
- - the up-down button to change the Y axis of the selected object
- - the top right corner image is used to scale up and down the item
- - and the delete button on the bottom of the editor UI to delete the selected object.
+ - The up-down button to change the Y axis of the selected object
+ - The top right corner image is used to scale up and down the item
+ - The delete button on the bottom of the editor UI to delete the selected object.
+ - And on the top left corner the Undo button to undo the changes in current session
 
 ## Working Approach
 The main 5 Managers classes here are 
