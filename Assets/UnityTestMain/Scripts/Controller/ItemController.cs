@@ -11,13 +11,16 @@ using AdvancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 public class ItemController : MonoBehaviour
 {
     [SerializeField] private CurrentSelectedItemBluePrint m_CurrentSelectedItem;
-    [SerializeField] private float minScale = 0.1f;
-    [SerializeField] private float movementSpeed = 1f;
+    [SerializeField] private float m_MinScale = 0.1f;
+    [SerializeField] private float m_MovementSpeed = 1f;
 
     Camera mainCam;
     private Transform thisTransform;
     private EventTrigger thisObjectClickEvent;
     private float minY;
+    private float camAngle;
+
+    private const float AngleToRadianRatio = MathF.PI / 180f;
 
 
     private void Start()
@@ -26,6 +29,7 @@ public class ItemController : MonoBehaviour
         CreateAndAddTrigger();
         mainCam = Camera.main;
         minY = thisTransform.position.y;
+        camAngle = mainCam.transform.localEulerAngles.x;
     }
 
     public void MoveInY(float deltaValueForY)
@@ -37,7 +41,8 @@ public class ItemController : MonoBehaviour
     {
         float distanceFromCam = Vector3.Distance(mainCam.transform.position, transform.position);
 
-        Vector3 forwardDirection = mainCam.transform.forward * Mathf.Sin(40f * Mathf.PI / 180f);
+        //taking only the forward part realted to objects
+        Vector3 forwardDirection = mainCam.transform.forward * Mathf.Sin(camAngle * AngleToRadianRatio);
         Vector3 rightDirection = mainCam.transform.right;
 
         forwardDirection.y = 0;
@@ -52,7 +57,7 @@ public class ItemController : MonoBehaviour
 
         Vector3 movementData = relativeXDelta + relativeZDelta;
 
-        movementData = movementData * movementSpeed * distanceFromCam;
+        movementData = movementData * m_MovementSpeed * distanceFromCam;
 
         thisTransform.Translate(movementData);
     }
@@ -60,7 +65,7 @@ public class ItemController : MonoBehaviour
     public void Scale(float scaleVal)
     {
         float currentScale = thisTransform.localScale.x;
-        currentScale = Math.Max(currentScale + scaleVal, minScale);
+        currentScale = Math.Max(currentScale + scaleVal, m_MinScale);
         thisTransform.localScale = new Vector3(currentScale, currentScale, currentScale);
     }
 
